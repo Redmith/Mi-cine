@@ -5,7 +5,7 @@
     "year": 2009,
     "genre": "Drama",
     "poster": "",
-    "featured": true,
+    "featured": false,
     "desc": "Un empleado judicial jubilado escribe una novela sobre un caso de homicidio que lo marcó 25 años atrás, mientras reaviva un amor que nunca se animó a declarar. Ganadora del Óscar a mejor película extranjera.",
     "embed": "<iframe src=\"https://bysetayico.com/e/95xobk0jzwqn\" frameborder=\"0\" width=\"640\" height=\"360\" allowfullscreen></iframe>"
   },
@@ -78,5 +78,15 @@
     "featured": false,
     "desc": "En un desierto postapocalíptico, Max se une a la fugitiva Furiosa en una huida a toda velocidad del tirano que controla el agua de la región.",
     "embed": ""
+  },
+  {
+    "title": "Los simuladores",
+    "year": 2000,
+    "genre": "Otro",
+    "poster": "",
+    "desc": "",
+    "embed": "<iframe src=\"https://bysetayico.com/e/4pzgkfusy4li\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": true,
+    "id": "peli-1794078160678"
   }
 ]
