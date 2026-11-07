@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" href="data:," />
+<title>MI CINE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0c; --bg2:#0c0c0c; --surface:#121212; --surface2:#171717; --line:#222222;
+    --text:#e3e3e3; --muted:#8f8f93; --muted2:#626266;
+    --accent:#ececec; --accent-ink:#111112;
+    --radius:3px; --radius-sm:2px;
+    --serif:"Newsreader",Georgia,"Times New Roman",serif;
+    --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  html{ color-scheme:dark; scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,p{ margin:0; }
+  button{ font:inherit; cursor:pointer; }
+  input,select,textarea{ font:inherit; }
+  a{ color:#d9d9dc; }
+  :focus-visible{ outline:2px solid #e8e8e8; outline-offset:2px; border-radius:4px; }
+
+  /* ---------- Header ---------- */
+  .topbar{ position:sticky; top:0; z-index:40; background:var(--bg); border-bottom:1px solid var(--line); }
+  .topbar-in{ max-width:1180px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .brand{ font-family:var(--serif); font-size:19px; font-weight:600; letter-spacing:.1em; line-height:1; color:#fff; white-space:nowrap; }
+  .nav{ display:flex; gap:4px; }
+  .nav button{ background:transparent; border:0; border-bottom:1px solid transparent; color:var(--muted); padding:6px 8px; font-weight:500; font-size:13.5px; }
+  .nav button.active{ color:#fff; border-bottom-color:#fff; }
+  .searchbox{ margin-left:auto; flex:1 1 220px; max-width:340px; position:relative; }
+  .searchbox input{ width:100%; box-sizing:border-box; background:transparent; border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:8px 12px 8px 34px; font-size:14px; }
+  .searchbox input::placeholder{ color:var(--muted2); }
+  .searchbox svg{ position:absolute; left:13px; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:var(--muted); }
+
+  main{ max-width:1180px; margin:0 auto; padding:0 16px 56px; }
+
+  /* ---------- Destacadas (carrusel) ---------- */
+  .hero{ margin:22px 0 4px; padding:2px 0 18px; border-bottom:1px solid var(--line); }
+  .hero-stage{ overflow:hidden; }
+  .hero-slide{ box-sizing:border-box; display:flex; gap:24px; align-items:flex-start; }
+  .hero-poster{ width:176px; flex:none; aspect-ratio:2/3; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:var(--surface); position:relative; }
+  .hero-poster img{ width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:1; }
+  .hero-content{ max-width:620px; padding-top:2px; }
+  .hero-controls{ display:flex; align-items:center; gap:14px; margin-top:16px; }
+  .hero-dots{ display:flex; gap:8px; align-items:center; }
+  .hero-dot{ width:26px; height:3px; border:0; padding:0; background:#333335; border-radius:2px; }
+  .hero-dot.active{ background:#ececec; }
+  .hero-counter{ color:var(--muted2); font-size:12.5px; font-weight:500; }
+  .hero-arrows{ margin-left:auto; display:flex; gap:6px; }
+  .hero-arrow{ width:32px; height:32px; background:transparent; border:1px solid var(--line); color:#cfcfd2; border-radius:var(--radius-sm); font-size:17px; line-height:1; display:flex; align-items:center; justify-content:center; }
+  .hero-arrow:hover{ border-color:#4a4a4d; color:#fff; }
+
+  .hero-tag{ font-size:12px; font-weight:500; color:var(--muted2); }
+  .hero-title{ font-family:var(--serif); font-size:clamp(26px,3.6vw,32px); font-weight:600; line-height:1.12; margin:6px 0 6px; }
+  .hero-meta{ color:var(--muted); font-weight:500; font-size:13px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .hero-meta .dot{ width:3px; height:3px; border-radius:50%; background:var(--muted2); }
+  .hero-desc{ color:#b9b9bd; margin:8px 0 16px; font-size:14.5px; line-height:1.65; }
+  .btn{ border:1px solid transparent; border-radius:var(--radius-sm); padding:9px 15px; font-weight:500; font-size:14px; display:inline-flex; align-items:center; gap:8px; }
+  .btn svg{ width:15px; height:15px; }
+  .btn-red{ background:transparent; color:#fff; border-color:#55555a; }
+  .btn-red:hover{ border-color:#8a8a90; background:#161616; }
+  .btn-ghost{ background:transparent; color:#cfcfd2; border-color:#2e2e30; }
+  .btn-ghost:hover{ border-color:#4a4a4d; color:#fff; }
+  .btn-dark{ background:transparent; color:#fff; border-color:var(--line); }
+  .btn-dark:hover{ border-color:#3d3d3e; }
+  .btn-sm{ padding:8px 13px; font-size:13px; }
+
+  /* ---------- Secciones ---------- */
+  .section-head{ display:flex; align-items:baseline; gap:12px; margin:26px 0 12px; flex-wrap:wrap; }
+  .section-head h2{ font-family:var(--sans); font-size:16px; font-weight:600; }
+  .section-head p{ color:var(--muted); font-size:13px; }
+
+  .chips{ display:flex; gap:2px 18px; flex-wrap:wrap; margin:16px 0 2px; }
+  .chip{ background:transparent; border:0; border-bottom:1px solid transparent; color:var(--muted); padding:6px 1px; border-radius:0; font-weight:500; font-size:13.5px; }
+  .chip.active{ background:transparent; color:#fff; border-bottom-color:#fff; }
+  .toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0 2px; }
+  .toolbar label{ font-size:13px; color:var(--muted); font-weight:500; }
+  .toolbar select{ background:transparent; border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:8px 10px; font-size:13.5px; }
+  .count-label{ margin-left:auto; color:var(--muted2); font-size:12.5px; font-weight:500; }
+
+  /* ---------- Grid de películas ---------- */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(164px,1fr)); gap:20px 14px; margin-top:12px; }
+  .card{ background:transparent; border:0; text-align:left; padding:0; color:inherit; }
+  .poster{ position:relative; aspect-ratio:2/3; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:var(--surface); }
+  .poster img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .poster-art{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:14px; }
+  .poster-art .pa-genre{ font-size:10.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; opacity:.5; }
+  .poster-art .pa-title{ font-family:var(--sans); font-size:20px; font-weight:600; line-height:1.15; margin-top:5px; }
+  .poster-art .pa-year{ margin-top:5px; font-weight:500; font-size:12px; opacity:.6; }
+  .card:hover .poster{ border-color:#333334; }
+  .fav-btn{ position:absolute; top:6px; right:6px; width:28px; height:28px; border:0; background:transparent; display:flex; align-items:center; justify-content:center; z-index:2; }
+  .fav-btn svg{ width:15px; height:15px; fill:none; stroke:#cfcfcf; stroke-width:2; }
+  .fav-btn.on{ background:transparent; }
+  .fav-btn.on svg{ fill:#fff; stroke:#fff; }
+  .card-info{ padding:8px 1px 0; }
+  .card-info h3{ font-size:14px; line-height:1.3; font-weight:600; }
+  .card-info p{ color:var(--muted); font-size:12.5px; margin-top:2px; font-weight:500; }
+  .empty{ border:1px dashed #2c2c2c; border-radius:var(--radius); padding:34px 20px; text-align:center; color:var(--muted); margin-top:16px; line-height:1.6; }
+  .empty strong{ color:#fff; display:block; font-size:17px; margin-bottom:4px; }
+
+  /* Continuar viendo */
+  .continue-card{ display:flex; gap:16px; align-items:center; background:transparent; border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-top:12px; flex-wrap:wrap; }
+  .continue-card .mini-poster{ width:64px; height:92px; border-radius:2px; flex:none; position:relative; overflow:hidden; border:1px solid var(--line); }
+  .continue-card .mini-poster img{ width:100%; height:100%; object-fit:cover; }
+  .continue-card h3{ font-size:17px; }
+  .continue-card p{ color:var(--muted); font-size:13.5px; margin-top:3px; }
+
+  /* ---------- Modal reproductor ---------- */
+  .modal-back{ position:fixed; inset:0; background:rgba(0,0,0,.82); z-index:80; display:none; align-items:flex-start; justify-content:center; overflow-y:auto; padding:22px 12px; box-sizing:border-box; }
+  .modal-back.open{ display:flex; }
+  .modal{ background:var(--bg2); border:1px solid var(--line); border-radius:6px; width:100%; max-width:920px; overflow:hidden; }
+  .player-wrap{ aspect-ratio:16/9; background:#000; position:relative; }
+  .player-wrap iframe{ width:100%; height:100%; border:0; display:block; }
+  .player-empty{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; gap:8px; color:var(--muted); line-height:1.6; }
+  .player-empty strong{ color:#fff; font-size:18px; }
+  .player-empty code{ background:var(--surface2); padding:2px 7px; border-radius:6px; color:#d9d9dc; font-size:13px; }
+  .modal-body{ padding:20px 22px 24px; }
+  .modal-body h2{ font-family:var(--serif); font-size:26px; font-weight:600; line-height:1.15; }
+  .modal-meta{ color:var(--muted); font-weight:500; font-size:13.5px; margin:8px 0 10px; display:flex; gap:10px; flex-wrap:wrap; }
+  .modal-desc{ color:#c9c9cd; line-height:1.65; font-size:15px; }
+  .modal-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+  .modal-close-row{ display:flex; justify-content:flex-end; padding:10px 12px 0; }
+  .icon-btn{ background:transparent; border:1px solid var(--line); color:#fff; width:36px; height:36px; border-radius:var(--radius-sm); font-size:16px; line-height:1; }
+
+  /* ---------- Administrar ---------- */
+  .admin-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px; align-items:start; }
+  .panel{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; }
+  .panel h3{ font-size:16px; font-weight:600; margin-bottom:4px; }
+  .panel .sub{ color:var(--muted); font-size:13.5px; line-height:1.55; margin-bottom:14px; }
+  .field{ margin-bottom:13px; }
+  .field label{ display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:#e3e3e6; }
+  .field label span{ color:var(--muted2); font-weight:600; }
+  .field input,.field select,.field textarea{ width:100%; box-sizing:border-box; background:var(--bg2); border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:10px 11px; font-size:14.5px; }
+  .field textarea{ min-height:86px; resize:vertical; }
+  .field .hint{ font-size:12.5px; color:var(--muted2); margin-top:5px; line-height:1.5; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .status{ border-radius:var(--radius-sm); padding:12px 14px; font-size:14px; line-height:1.55; margin-top:12px; display:none; }
+  .status.show{ display:block; }
+  .status.ok{ background:#131711; border:1px solid #2a3324; color:#c4cfba; }
+  .status.err{ background:#171111; border:1px solid #3d2626; color:#d3b8b8; }
+  .status.info{ background:#121417; border:1px solid #2a2f36; color:#c2c9d1; }
+  .gh-line{ display:flex; align-items:center; gap:10px; background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius-sm); padding:11px 13px; font-size:14px; margin-bottom:12px; flex-wrap:wrap; }
+  .gh-line code{ color:#d9d9dc; font-size:13.5px; word-break:break-all; }
+  .admin-list{ display:flex; flex-direction:column; gap:10px; }
+  .admin-item{ display:flex; gap:12px; align-items:center; background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius); padding:10px 12px; }
+  .admin-item .thumb{ width:44px; height:64px; border-radius:2px; flex:none; overflow:hidden; position:relative; border:1px solid var(--line); }
+  .admin-item .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .admin-item h4{ font-size:14.5px; margin:0; }
+  .admin-item p{ color:var(--muted); font-size:12.5px; margin-top:2px; }
+  .admin-item .acts{ margin-left:auto; display:flex; gap:6px; flex:none; }
+  .mini-btn{ background:transparent; border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:8px 11px; font-size:12.5px; font-weight:600; }
+  .mini-btn.danger{ color:#cfa3a3; border-color:#3d2626; }
+  .steps{ margin:0; padding-left:20px; color:#d5d5dd; line-height:1.75; font-size:14.5px; }
+  .steps code{ background:var(--surface2); padding:1px 6px; border-radius:5px; font-size:13px; color:#d9d9dc; }
+  pre.readme{ background:#0a0a0a; border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px; overflow-x:auto; font-size:12.5px; line-height:1.6; color:#c2c2c9; white-space:pre-wrap; word-break:break-word; max-height:320px; overflow-y:auto; }
+  .confirm-bar{ display:none; background:#171111; border:1px solid #3d2626; color:#d3b8b8; border-radius:var(--radius-sm); padding:12px 14px; font-size:14px; margin-top:12px; line-height:1.55; }
+  .confirm-bar.show{ display:block; }
+  .confirm-bar .row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .hidden{ display:none !important; }
+  footer{ border-top:1px solid var(--line); margin-top:44px; }
+  .footer-in{ max-width:1180px; margin:0 auto; padding:20px 16px 30px; color:var(--muted2); font-size:12.5px; line-height:1.7; }
+  .footer-in strong{ color:var(--muted); }
+
+  @media (max-width:860px){
+    .admin-grid{ grid-template-columns:1fr; }
+    .hero-slide{ flex-direction:column; gap:14px; }
+    .hero-poster{ width:150px; }
+    .brand{ font-size:18px; }
+    .searchbox{ order:3; max-width:none; flex-basis:100%; margin-left:0; }
+  }
+  @media (max-width:480px){
+    .grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px 10px; }
+    .field-row{ grid-template-columns:1fr; }
+  }
+  /* Smart TV: foco grande y tarjetas más legibles a distancia */
+  @media (min-width:1600px){
+    body{ font-size:18px; }
+    .grid{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
+    .card:focus-visible{ outline-width:5px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">MI CINE</div>
+    <nav class="nav" aria-label="Secciones">
+      <button id="navCatalogo" class="active" type="button">Catálogo</button>
+      <button id="navAdmin" type="button">Administrar</button>
+    </nav>
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="searchInput" type="search" placeholder="Buscar películas…" aria-label="Buscar películas" />
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ VISTA CATÁLOGO ============ -->
+  <div id="viewCatalogo">
+    <section class="hero" id="heroSection" aria-label="Películas destacadas">
+      <div class="hero-stage" id="heroStage"></div>
+      <div class="hero-controls hidden" id="heroControls">
+        <div class="hero-dots" id="heroDots" role="group" aria-label="Elegir destacada"></div>
+        <span class="hero-counter" id="heroCounter"></span>
+        <div class="hero-arrows">
+          <button class="hero-arrow" id="heroPrev" type="button" aria-label="Destacada anterior">‹</button>
+          <button class="hero-arrow" id="heroNext" type="button" aria-label="Destacada siguiente">›</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="continueSection" class="hidden" aria-label="Continuar viendo">
+      <div class="section-head"><h2>Continuar viendo</h2><p>La última película que abriste en esta pestaña.</p></div>
+      <div class="continue-card" id="continueCard"></div>
+    </section>
+
+    <div class="chips" id="genreChips" role="group" aria-label="Filtrar por género"></div>
+
+    <div class="toolbar">
+      <label for="sortSelect">Ordenar</label>
+      <select id="sortSelect">
+        <option value="az">Alfabético (A–Z)</option>
+        <option value="year-desc">Año: más nuevas</option>
+        <option value="year-asc">Año: más viejas</option>
+        <option value="added">Últimas agregadas</option>
+      </select>
+      <button class="chip" id="favFilter" type="button">★ Solo favoritos</button>
+      <span class="count-label" id="countLabel"></span>
+    </div>
+
+    <section aria-label="Catálogo de películas">
+      <div class="section-head"><h2>Catálogo</h2><p id="catalogSource"></p></div>
+      <div class="grid" id="movieGrid"></div>
+      <div class="empty hidden" id="emptyState">
+        <strong>No se encontró ninguna película</strong>
+        Probá con otra búsqueda o cambiá el filtro de género. También podés agregar películas desde <b>Administrar</b>.
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ VISTA ADMINISTRAR ============ -->
+  <div id="viewAdmin" class="hidden">
+    <div class="section-head"><h2>Administrar</h2><p>Panel separado del catálogo público. Los cambios se guardan en <b>catalog.json</b> de tu GitHub.</p></div>
+
+    <div class="admin-grid">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <section class="panel" aria-label="Agregar o editar película">
+          <h3 id="formTitle">Agregar película</h3>
+          <p class="sub">Completá los datos y el código que te da Byse. La página extrae sola la dirección del reproductor desde el iframe.</p>
+          <form id="movieForm">
+            <div class="field">
+              <label for="fTitle">Título *</label>
+              <input id="fTitle" required placeholder="Ej.: El secreto de sus ojos" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="fYear">Año *</label>
+                <input id="fYear" required inputmode="numeric" placeholder="2009" />
+              </div>
+              <div class="field">
+                <label for="fGenre">Género *</label>
+                <select id="fGenre">
+                  <option>Acción</option><option>Animación</option><option>Aventura</option>
+                  <option>Ciencia ficción</option><option>Comedia</option><option>Crimen</option>
+                  <option>Documental</option><option>Drama</option><option>Fantasía</option>
+                  <option>Romance</option><option>Suspenso</option><option>Terror</option>
+                  <option>Thriller</option><option>Otro</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="fPoster">Portada <span>(dirección de la imagen, opcional)</span></label>
+              <input id="fPoster" placeholder="https://…/portada.jpg" />
+              <p class="hint">Si lo dejás vacío, MI CINE genera una portada con el título y el género.</p>
+            </div>
+            <div class="field">
+              <label for="fDesc">Descripción</label>
+              <textarea id="fDesc" placeholder="Sinopsis o información de la película…"></textarea>
+            </div>
+            <div class="field">
+              <label for="fEmbed">Código de inserción de Byse *</label>
+              <textarea id="fEmbed" required placeholder='Pegá el iframe completo, ej.: <iframe src="https://bysetayico.com/e/…" …></iframe>'></textarea>
+              <p class="hint" id="embedPreview">Todavía no se detectó ninguna dirección de reproductor.</p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="fFeatured">¿Destacada en la portada?</label>
+                <select id="fFeatured"><option value="no">No</option><option value="si">Sí, destacada</option></select>
+                <p class="hint">Podés destacar varias: rotan en la portada de derecha a izquierda, 3 segundos cada una, con su portada a la vista.</p>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button class="btn btn-dark" id="cancelEdit" type="button" style="width:100%;justify-content:center">Cancelar edición</button>
+              </div>
+            </div>
+            <button class="btn btn-red" type="submit" style="width:100%;justify-content:center" id="submitMovie">＋ Agregar al catálogo</button>
+            <div class="status" id="formStatus"></div>
+          </form>
+        </section>
+
+        <section class="panel" aria-label="Películas cargadas">
+          <h3>Películas cargadas</h3>
+          <p class="sub">Desde acá podés <b>editar</b> o <b>eliminar</b> cualquier película. Después tocá «Guardar en GitHub» para publicar los cambios.</p>
+          <div class="admin-list" id="adminList"></div>
+          <div class="confirm-bar" id="deleteBar">
+            <span id="deleteText"></span>
+            <div class="row">
+              <button class="btn btn-red btn-sm" id="deleteYes" type="button">Sí, eliminar</button>
+              <button class="btn btn-dark btn-sm" id="deleteNo" type="button">Cancelar</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <section class="panel" aria-label="Guardar en GitHub">
+          <h3>Guardar en GitHub</h3>
+          <p class="sub">Actualiza <code>catalog.json</code> con la API de GitHub. El token se mantiene <b>solo en la memoria de esta pestaña</b>: no se guarda en ningún archivo ni en el navegador.</p>
+          <div class="gh-line"><span>Repositorio</span><code>github.com/Redmith/mi-cine</code></div>
+          <div class="gh-line"><span>Tu página</span><code>redmith.github.io/mi-cine/</code></div>
+          <div class="field-row">
+            <div class="field"><label for="ghOwner">Usuario</label><input id="ghOwner" value="Redmith" /></div>
+            <div class="field"><label for="ghRepo">Repositorio</label><input id="ghRepo" value="mi-cine" /></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="ghBranch">Rama</label><input id="ghBranch" value="main" /></div>
+            <div class="field"><label for="ghFile">Archivo</label><input id="ghFile" value="catalog.json" /></div>
+          </div>
+          <div class="field">
+            <label for="ghToken">Token de GitHub</label>
+            <input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_… (solo repo mi-cine, Contents: Read and write)" />
+            <p class="hint">Token de grano fino: acceso únicamente al repositorio <b>mi-cine</b>, permiso <b>Contents: Read and write</b>, sin permisos administrativos.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-red" id="btnGithubSave" type="button">Guardar en GitHub</button>
+            <button class="btn btn-dark" id="btnGithubLoad" type="button">Traer desde GitHub</button>
+          </div>
+          <div class="status" id="ghStatus"></div>
+          <div style="border-top:1px solid var(--line);margin-top:18px;padding-top:16px">
+            <h3 style="font-size:15.5px">Sin token, igual podés descargar el catálogo</h3>
+            <p class="sub">Descargá <code>catalog.json</code> y subilo a mano al repositorio, o copialo y pegalo en el editor de GitHub.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-dark btn-sm" id="btnDownloadCatalog" type="button">⬇ Descargar catalog.json</button>
+              <button class="btn btn-dark btn-sm" id="btnCopyCatalog" type="button">Copiar catalog.json</button>
+              <button class="btn btn-dark btn-sm" id="btnDownloadReadme" type="button">⬇ Descargar README.md</button>
+            </div>
+            <div class="status" id="dlStatus"></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-label="Instalación">
+          <h3>Instalación en GitHub Pages</h3>
+          <ol class="steps">
+            <li>Creá el repositorio <code>mi-cine</code> en <a href="https://github.com/Redmith" target="_blank" rel="noopener">github.com/Redmith</a>.</li>
+            <li>Subí estos 3 archivos: <code>index.html</code>, <code>catalog.json</code> y <code>README.md</code>.</li>
+            <li>En el repo: <code>Settings → Pages → Branch: main / (root) → Save</code>.</li>
+            <li>Tu página queda en <code>https://redmith.github.io/mi-cine/</code></li>
+            <li>En Byse, subí tu video y copiá el código iframe que te entrega.</li>
+            <li>Pegalo en «Agregar película» y tocá <b>Guardar en GitHub</b>.</li>
+          </ol>
+          <p class="sub" style="margin-top:12px"><b>A tener en cuenta:</b> GitHub Pages es público — el catálogo y sus enlaces los puede ver cualquier visitante — y no tiene base de datos privada ni autenticación propia.</p>
+          <h3 style="font-size:15.5px;margin-top:8px">README.md de tu repositorio</h3>
+          <pre class="readme" id="readmePreview"></pre>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-in">
+    <strong>MI CINE</strong> — Tu plataforma personal de películas. Los videos no se guardan en esta página: se reproducen con el reproductor de Byse mediante iframe. El catálogo vive en <strong>catalog.json</strong>, en el repositorio <strong>Redmith/mi-cine</strong> de GitHub.
+  </div>
+</footer>
+
+<!-- Modal reproductor -->
+<div class="modal-back" id="playerModal" role="dialog" aria-modal="true" aria-label="Reproductor">
+  <div class="modal">
+    <div class="modal-close-row"><button class="icon-btn" id="closePlayer" type="button" aria-label="Cerrar reproductor">✕</button></div>
+    <div class="player-wrap" id="playerWrap"></div>
+    <div class="modal-body">
+      <h2 id="modalTitle">—</h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost btn-sm" id="modalFav" type="button">☆ Marcar favorito</button>
+        <button class="btn btn-dark btn-sm" id="modalEdit" type="button">Editar en Administrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= Datos de ejemplo =================
+   Películas de muestra para probar la página. Podés editarlas
+   o borrarlas desde Administrar y reemplazarlas por las tuyas. */
+var EXAMPLE_CATALOG = [
+  { id:"ej-1", title:"El secreto de sus ojos", year:2009, genre:"Drama", poster:"", featured:true, example:true,
+    desc:"Un empleado judicial jubilado escribe una novela sobre un caso de homicidio que lo marcó 25 años atrás, mientras reaviva un amor que nunca se animó a declarar. Ganadora del Óscar a mejor película extranjera.",
+    embed:'<iframe src="https://bysetayico.com/e/95xobk0jzwqn" frameborder="0" width="640" height="360" allowfullscreen></iframe>' },
+  { id:"ej-2", title:"John Wick 4", year:2023, genre:"Acción", poster:"", featured:false, example:true,
+    desc:"John Wick descubre un camino para derrotar al Alto Consejo, pero antes debe enfrentar a un nuevo enemigo con alianzas en todo el mundo y a viejos amigos convertidos en adversarios.",
+    embed:"" },
+  { id:"ej-3", title:"El Conjuro", year:2013, genre:"Terror", poster:"", featured:false, example:true,
+    desc:"Los investigadores paranormales Ed y Lorraine Warren ayudan a una familia aterrorizada por una presencia oscura en su granja. Basada en un caso real de los años 70.",
+    embed:"" },
+  { id:"ej-4", title:"Relatos salvajes", year:2014, genre:"Comedia", poster:"", featured:true, example:true,
+    desc:"Seis historias argentinas sobre personas comunes que, empujadas al límite por la bronca y la injusticia, pierden el control de la manera más explosiva.",
+    embed:"" },
+  { id:"ej-5", title:"Interestelar", year:2014, genre:"Ciencia ficción", poster:"", featured:true, example:true,
+    desc:"Con la Tierra volviéndose inhabitable, un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.",
+    embed:"" },
+  { id:"ej-6", title:"Coco", year:2017, genre:"Animación", poster:"", featured:false, example:true,
+    desc:"Miguel, un chico que sueña con ser músico, viaja a la Tierra de los Muertos en el Día de Muertos para descubrir la verdadera historia de su familia.",
+    embed:"" },
+  { id:"ej-7", title:"Parásitos", year:2019, genre:"Thriller", poster:"", featured:false, example:true,
+    desc:"Una familia pobre se infiltra poco a poco en la vida de una familia rica de Seúl, hasta que un secreto inesperado pone todo en peligro. Ganadora del Óscar a mejor película.",
+    embed:"" },
+  { id:"ej-8", title:"Mad Max: Furia en el camino", year:2015, genre:"Acción", poster:"", featured:false, example:true,
+    desc:"En un desierto postapocalíptico, Max se une a la fugitiva Furiosa en una huida a toda velocidad del tirano que controla el agua de la región.",
+    embed:"" },
+  { id:"peli-1794078160678", title:"Los simuladores", year:2000, genre:"Otro",
+    poster:"https://image.tmdb.org/t/p/w500/9LFNewnTzahEuZ4YKxEZoMmDeqO.jpg", featured:true,
+    desc:"Cuatro socios resuelven los problemas de sus clientes con operativos de simulación: engaños planificados al detalle para que cada cliente salga beneficiado y el responsable, neutralizado.",
+    embed:'<iframe src="https://bysetayico.com/e/4pzgkfusy4li" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" width="640" height="360" allowfullscreen></iframe>' }
+];
+
+/* Portadas generadas: un solo tono neutro para todo el catálogo */
+var GENRE_COLORS = { "Otro":["#131313","#131313"] };
+
+/* ================= Estado (solo en memoria de esta pestaña) ================= */
+var catalog = [];
+var favorites = {};       // id -> true
+var lastPlayedId = null;  // Continuar viendo
+var activeGenre = "Todas";
+var onlyFavs = false;
+var editingId = null;
+var pendingDeleteId = null;
+var currentModalId = null;
+var githubToken = "";     // NUNCA se guarda fuera de esta variable
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+
+function extractEmbedSrc(raw){
+  if(!raw) return "";
+  var m = String(raw).match(/src\s*=\s*["']([^"']+)["']/i);
+  if(m) return m[1].trim();
+  var url = String(raw).trim();
+  if(/^https?:\/\/\S+$/.test(url)) return url;
+  return "";
+}
+function posterArtHTML(m, small){
+  var c = GENRE_COLORS[m.genre] || GENRE_COLORS["Otro"];
+  if(small){
+    var initial = String(m.title||"?").trim().charAt(0).toUpperCase();
+    return '<div class="poster-art" style="background:'+c[0]+';align-items:center;justify-content:center;padding:6px">'
+      + '<span style="font-size:22px;font-weight:600;line-height:1;color:#d8d8d8">'+esc(initial)+'</span></div>';
+  }
+  var longest = 0;
+  String(m.title||"").split(/\s+/).forEach(function(w){ if(w.length>longest) longest=w.length; });
+  var titleSize = longest>=12 ? 15 : (longest>=10 ? 17 : 20);
+  return '<div class="poster-art" style="background:'+c[0]+'">'
+    + '<span class="pa-genre">'+esc(m.genre)+'</span>'
+    + '<span class="pa-title" style="font-size:'+titleSize+'px">'+esc(m.title)+'</span>'
+    + '<span class="pa-year">'+esc(m.year)+'</span></div>';
+}
+function posterHTML(m, small){
+  if(m.poster){
+    // La portada real va arriba de todo; la generada queda solo como respaldo si la imagen falla.
+    return posterArtHTML(m, small)
+      + '<img src="'+esc(m.poster)+'" alt="Portada de '+esc(m.title)+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">';
+  }
+  return posterArtHTML(m, small);
+}
+
+/* ================= Carga del catálogo ================= */
+function loadCatalog(){
+  // En GitHub Pages, si existe catalog.json junto a index.html, se usa ese.
+  // Si no (como en esta vista previa), se cargan los ejemplos.
+  fetch("catalog.json",{cache:"no-store"}).then(function(r){
+    if(!r.ok) throw new Error("no");
+    return r.json();
+  }).then(function(data){
+    if(Array.isArray(data) && data.length){ catalog = data; $("catalogSource").textContent = "Cargado desde catalog.json"; }
+    else { catalog = EXAMPLE_CATALOG.slice(); $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar"; }
+    afterCatalogChange();
+  }).catch(function(){
+    catalog = EXAMPLE_CATALOG.slice();
+    $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar";
+    afterCatalogChange();
+  });
+}
+function afterCatalogChange(){ renderHero(); renderChips(); renderGrid(); renderAdminList(); renderContinue(); }
+
+/* ================= Render ================= */
+/* ================= Destacadas: carrusel automático =================
+   Las destacadas se muestran de a una, 3 segundos cada una, y pasan
+   de derecha a izquierda. Se pausa al pasar el mouse, al enfocar con
+   teclado, cuando la pestaña no se ve o si el sistema pide menos movimiento. */
+var heroIndex = 0;
+var heroTimer = null;
+var heroHoverPause = false;
+
+function featuredMovies(){
+  var list = catalog.filter(function(m){ return m.featured; });
+  if(!list.length) list = catalog.slice(0,1);
+  // Primero las que tienen portada real, para que la portada se vea al entrar.
+  return list.slice().sort(function(a,b){ return (b.poster?1:0) - (a.poster?1:0); });
+}
+function featuredMovie(){
+  var list = featuredMovies();
+  return list.length ? list[Math.min(heroIndex, list.length-1)] : null;
+}
+function heroSlideHTML(m){
+  return '<article class="hero-slide">'
+    + '<div class="hero-poster">'+posterHTML(m,false)+'</div>'
+    + '<div class="hero-content">'
+    + '<span class="hero-tag">Destacada</span>'
+    + '<h1 class="hero-title">'+esc(m.title)+'</h1>'
+    + '<div class="hero-meta"><span>'+esc(m.year)+'</span><span class="dot"></span><span>'+esc(m.genre)+'</span></div>'
+    + '<p class="hero-desc">'+esc(m.desc || "")+'</p>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap">'
+    + '<button class="btn btn-red" data-hero-play="'+esc(m.id)+'" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.5v15l13-7.5z"/></svg> Reproducir</button>'
+    + '<button class="btn btn-ghost" data-hero-fav="'+esc(m.id)+'" type="button">'+(favorites[m.id] ? "★ En favoritos" : "☆ Favorito")+'</button>'
+    + '</div></div></article>';
+}
+function renderHeroSlide(){
+  var list = featuredMovies();
+  if(!list.length) return;
+  var m = list[Math.min(heroIndex, list.length-1)];
+  $("heroStage").innerHTML = heroSlideHTML(m);
+  var plays = $("heroStage").querySelectorAll("[data-hero-play]");
+  for(var i=0;i<plays.length;i++) plays[i].addEventListener("click", function(){ openPlayer(this.getAttribute("data-hero-play")); });
+  var favs = $("heroStage").querySelectorAll("[data-hero-fav]");
+  for(var j=0;j<favs.length;j++) favs[j].addEventListener("click", function(){ toggleFav(this.getAttribute("data-hero-fav")); });
+}
+function renderHero(){
+  var list = featuredMovies();
+  if(!list.length){ $("heroSection").classList.add("hidden"); stopHeroTimer(); return; }
+  $("heroSection").classList.remove("hidden");
+  if(heroIndex >= list.length) heroIndex = 0;
+  if(heroIndex < 0) heroIndex = 0;
+  renderHeroSlide();
+  var multi = list.length > 1;
+  $("heroControls").classList.toggle("hidden", !multi);
+  if(multi){
+    var dots = "";
+    list.forEach(function(m, idx){ dots += '<button class="hero-dot" data-hero-dot="'+idx+'" type="button" aria-label="Ver destacada: '+esc(m.title)+'"></button>'; });
+    $("heroDots").innerHTML = dots;
+    var dotBtns = $("heroDots").querySelectorAll("[data-hero-dot]");
+    for(var k=0;k<dotBtns.length;k++) dotBtns[k].addEventListener("click", function(){ var t = parseInt(this.getAttribute("data-hero-dot"),10); goToHero(t, t>heroIndex ? 1 : -1); restartHeroTimer(); });
+  }
+  updateHeroDots();
+  startHeroTimer();
+}
+function updateHeroDots(){
+  var list = featuredMovies();
+  var dotBtns = $("heroDots").querySelectorAll("[data-hero-dot]");
+  for(var i=0;i<dotBtns.length;i++) dotBtns[i].classList.toggle("active", i===heroIndex);
+  $("heroCounter").textContent = list.length > 1 ? (heroIndex+1) + " de " + list.length : "";
+}
+var heroAnimating = false;
+function goToHero(idx, dir){
+  var list = featuredMovies();
+  if(!list.length || heroAnimating) return;
+  var target = ((idx % list.length) + list.length) % list.length;
+  if(target === heroIndex){ updateHeroDots(); return; }
+  if(dir == null) dir = 1;
+  var stage = $("heroStage");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!stage.animate || reduce){
+    heroIndex = target; renderHeroSlide(); updateHeroDots();
+    return;
+  }
+  // Sale hacia la izquierda y la siguiente entra desde la derecha.
+  heroAnimating = true;
+  var out = stage.animate(
+    [{ transform:"translateX(0)", opacity:"1" }, { transform:"translateX(" + (-64*dir) + "px)", opacity:"0" }],
+    { duration:260, easing:"ease-in" });
+  out.onfinish = function(){
+    heroIndex = target; renderHeroSlide(); updateHeroDots();
+    var inn = stage.animate(
+      [{ transform:"translateX(" + (64*dir) + "px)", opacity:"0" }, { transform:"translateX(0)", opacity:"1" }],
+      { duration:340, easing:"ease-out" });
+    inn.onfinish = function(){ heroAnimating = false; };
+  };
+}
+function nextHero(){ goToHero(heroIndex + 1, 1); }
+function heroAutoplayAllowed(){
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  if(document.hidden) return false;
+  if(heroHoverPause) return false;
+  if(!$("viewCatalogo") || $("viewCatalogo").classList.contains("hidden")) return false;
+  if($("playerModal") && $("playerModal").classList.contains("open")) return false;
+  return featuredMovies().length > 1;
+}
+function startHeroTimer(){
+  stopHeroTimer();
+  heroTimer = setInterval(function(){
+    if(heroAutoplayAllowed()) nextHero();
+  }, 3000);
+}
+function stopHeroTimer(){ if(heroTimer){ clearInterval(heroTimer); heroTimer = null; } }
+function restartHeroTimer(){ startHeroTimer(); }
+function genresList(){
+  var seen = {}, out = [];
+  catalog.forEach(function(m){ if(!seen[m.genre]){ seen[m.genre]=1; out.push(m.genre); } });
+  return out.sort();
+}
+function renderChips(){
+  var html = '<button class="chip'+(activeGenre==="Todas"?" active":"")+'" data-genre="Todas" type="button">Todas</button>';
+  genresList().forEach(function(g){
+    html += '<button class="chip'+(activeGenre===g?" active":"")+'" data-genre="'+esc(g)+'" type="button">'+esc(g)+'</button>';
+  });
+  html += '<button class="chip'+(activeGenre==="Favoritos"?" active":"")+'" data-genre="Favoritos" type="button">★ Favoritos</button>';
+  $("genreChips").innerHTML = html;
+  var chips = $("genreChips").querySelectorAll(".chip");
+  for(var i=0;i<chips.length;i++){
+    chips[i].addEventListener("click", function(){
+      activeGenre = this.getAttribute("data-genre");
+      if(activeGenre==="Favoritos"){ onlyFavs = true; } else { onlyFavs = false; $("favFilter").classList.remove("active"); }
+      renderChips(); renderGrid();
+    });
+  }
+}
+function filteredMovies(){
+  var q = $("searchInput").value.trim().toLowerCase();
+  var list = catalog.filter(function(m){
+    if(activeGenre!=="Todas" && activeGenre!=="Favoritos" && m.genre!==activeGenre) return false;
+    if(onlyFavs && !favorites[m.id]) return false;
+    if(q && (m.title+" "+m.year+" "+m.genre).toLowerCase().indexOf(q)===-1) return false;
+    return true;
+  });
+  var sort = $("sortSelect").value;
+  if(sort==="az") list.sort(function(a,b){ return a.title.localeCompare(b.title,"es"); });
+  if(sort==="year-desc") list.sort(function(a,b){ return (b.year||0)-(a.year||0); });
+  if(sort==="year-asc") list.sort(function(a,b){ return (a.year||0)-(b.year||0); });
+  return list;
+}
+function renderGrid(){
+  var list = filteredMovies();
+  var html = "";
+  list.forEach(function(m){
+    html += '<div class="card" role="button" tabindex="0" data-open="'+esc(m.id)+'" aria-label="Ver '+esc(m.title)+'">'
+      + '<div class="poster">'
+      + '<button class="fav-btn'+(favorites[m.id]?" on":"")+'" data-fav="'+esc(m.id)+'" type="button" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></button>'
+      + posterHTML(m,false)
+      + '</div>'
+      + '<div class="card-info"><h3>'+esc(m.title)+'</h3><p>'+esc(m.year)+' · '+esc(m.genre)+'</p></div></div>';
+  });
+  $("movieGrid").innerHTML = html;
+  $("emptyState").classList.toggle("hidden", list.length>0);
+  $("countLabel").textContent = list.length + (list.length===1 ? " película" : " películas");
+  var cards = $("movieGrid").querySelectorAll("[data-open]");
+  for(var i=0;i<cards.length;i++){
+    cards[i].addEventListener("click", function(e){
+      if(e.target.closest("[data-fav]")) return;
+      openPlayer(this.getAttribute("data-open"));
+    });
+    cards[i].addEventListener("keydown", function(e){
+      if(e.key==="Enter" || e.key===" "){ e.preventDefault(); openPlayer(this.getAttribute("data-open")); }
+    });
+  }
+  var favs = $("movieGrid").querySelectorAll("[data-fav]");
+  for(var j=0;j<favs.length;j++){
+    favs[j].addEventListener("click", function(e){ e.stopPropagation(); toggleFav(this.getAttribute("data-fav")); });
+  }
+}
+function toggleFav(id){
+  if(favorites[id]) delete favorites[id]; else favorites[id]=true;
+  renderGrid(); renderHero();
+  if(currentModalId===id) syncModalFav();
+}
+function renderContinue(){
+  var m = null;
+  for(var i=0;i<catalog.length;i++) if(catalog[i].id===lastPlayedId) m = catalog[i];
+  if(!m){ $("continueSection").classList.add("hidden"); return; }
+  $("continueSection").classList.remove("hidden");
+  $("continueCard").innerHTML =
+      '<div class="mini-poster">'+posterHTML(m,true)+'</div>'
+    + '<div style="flex:1;min-width:200px"><h3>'+esc(m.title)+'</h3><p>'+esc(m.year)+' · '+esc(m.genre)+'</p></div>'
+    + '<button class="btn btn-red btn-sm" id="continuePlay" type="button">▶ Seguir viendo</button>';
+  $("continuePlay").onclick = function(){ openPlayer(m.id); };
+}
+function renderAdminList(){
+  if(!catalog.length){ $("adminList").innerHTML = '<p class="sub">El catálogo está vacío. Agregá tu primera película con el formulario.</p>'; return; }
+  var sorted = catalog.slice().sort(function(a,b){ return a.title.localeCompare(b.title,"es"); });
+  var html = "";
+  sorted.forEach(function(m){
+    html += '<div class="admin-item"><div class="thumb">'+posterHTML(m,true)+'</div>'
+      + '<div><h4>'+esc(m.title)+(m.featured?' <span style="color:#ececec">★ destacada</span>':'')+'</h4><p>'+esc(m.year)+' · '+esc(m.genre)+(m.example?' · ejemplo':'')+(extractEmbedSrc(m.embed)?' · con reproductor':' · sin reproductor')+'</p></div>'
+      + '<div class="acts"><button class="mini-btn" data-edit="'+esc(m.id)+'" type="button">Editar</button>'
+      + '<button class="mini-btn danger" data-del="'+esc(m.id)+'" type="button">Eliminar</button></div></div>';
+  });
+  $("adminList").innerHTML = html;
+  var eds = $("adminList").querySelectorAll("[data-edit]");
+  for(var i=0;i<eds.length;i++) eds[i].addEventListener("click", function(){ startEdit(this.getAttribute("data-edit")); });
+  var dels = $("adminList").querySelectorAll("[data-del]");
+  for(var j=0;j<dels.length;j++) dels[j].addEventListener("click", function(){ askDelete(this.getAttribute("data-del")); });
+}
+
+/* ================= Reproductor ================= */
+function findMovie(id){ for(var i=0;i<catalog.length;i++) if(catalog[i].id===id) return catalog[i]; return null; }
+function openPlayer(id){
+  var m = findMovie(id); if(!m) return;
+  currentModalId = id;
+  lastPlayedId = id; renderContinue();
+  var src = extractEmbedSrc(m.embed);
+  $("playerWrap").innerHTML = src
+    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+'"></iframe>'
+    : '<div class="player-empty"><strong>Esta película todavía no tiene reproductor</strong><span>Es una película de ejemplo. Para verla, pegá su código de Byse desde <b>Administrar → Editar</b>.<br>Ejemplo de formato: <code>&lt;iframe src="https://bysetayico.com/e/…"&gt;</code></span></div>';
+  $("modalTitle").textContent = m.title;
+  $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span>';
+  $("modalDesc").textContent = m.desc || "Sin descripción.";
+  syncModalFav();
+  $("modalEdit").onclick = function(){ closePlayer(); showView("admin"); startEdit(id); };
+  $("playerModal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function syncModalFav(){
+  if(!currentModalId) return;
+  $("modalFav").textContent = favorites[currentModalId] ? "★ En favoritos" : "☆ Marcar favorito";
+}
+function closePlayer(){
+  $("playerModal").classList.remove("open");
+  $("playerWrap").innerHTML = ""; // corta la reproducción al cerrar
+  document.body.style.overflow = "";
+  currentModalId = null;
+}
+
+/* ================= Administrar: alta / edición / baja ================= */
+function setStatus(el, type, msg){ el.className = "status show " + type; el.innerHTML = msg; }
+function clearStatus(el){ el.className = "status"; el.textContent = ""; }
+
+function startEdit(id){
+  var m = findMovie(id); if(!m) return;
+  editingId = id;
+  $("fTitle").value = m.title; $("fYear").value = m.year; $("fGenre").value = m.genre;
+  $("fPoster").value = m.poster || ""; $("fDesc").value = m.desc || ""; $("fEmbed").value = m.embed || "";
+  $("fFeatured").value = m.featured ? "si" : "no";
+  $("formTitle").textContent = "Editar película";
+  $("submitMovie").textContent = "Guardar cambios";
+  updateEmbedPreview();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function resetForm(){
+  editingId = null;
+  $("movieForm").reset();
+  $("formTitle").textContent = "Agregar película";
+  $("submitMovie").textContent = "＋ Agregar al catálogo";
+  updateEmbedPreview();
+}
+function askDelete(id){
+  var m = findMovie(id); if(!m) return;
+  pendingDeleteId = id;
+  $("deleteText").textContent = "¿Eliminar «" + m.title + "» (" + m.year + ") del catálogo? El cambio se publica cuando toques «Guardar en GitHub».";
+  $("deleteBar").classList.add("show");
+}
+function updateEmbedPreview(){
+  var src = extractEmbedSrc($("fEmbed").value);
+  $("embedPreview").innerHTML = src
+    ? "✔ Reproductor detectado: <b style='color:#bcdcc9'>" + esc(src) + "</b>"
+    : "Todavía no se detectó ninguna dirección de reproductor.";
+}
+
+/* ================= GitHub ================= */
+function catalogJSONText(){ return JSON.stringify(catalog, null, 2); }
+function b64encode(str){
+  var bytes = new TextEncoder().encode(str);
+  var bin = ""; bytes.forEach(function(b){ bin += String.fromCharCode(b); });
+  return btoa(bin);
+}
+function ghConfig(){
+  return { owner:$("ghOwner").value.trim()||"Redmith", repo:$("ghRepo").value.trim()||"mi-cine",
+           branch:$("ghBranch").value.trim()||"main", file:$("ghFile").value.trim()||"catalog.json",
+           token:githubToken };
+}
+function ghHeaders(token){
+  return { "Authorization":"Bearer "+token, "Accept":"application/vnd.github+json", "Content-Type":"application/json", "X-GitHub-Api-Version":"2022-11-28" };
+}
+function saveToGithub(){
+  var cfg = ghConfig();
+  var st = $("ghStatus");
+  if(!cfg.token){ setStatus(st,"err","Primero pegá tu token de GitHub en el campo de arriba. Sin token, GitHub no permite guardar. El token queda solo en la memoria de esta pestaña."); return; }
+  setStatus(st,"info","Conectando con GitHub…");
+  var url = "https://api.github.com/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo)+"/contents/"+encodeURIComponent(cfg.file);
+  fetch(url+"?ref="+encodeURIComponent(cfg.branch), {headers:ghHeaders(cfg.token)}).then(function(r){
+    if(r.status===404) return null; // el archivo todavía no existe: se crea
+    if(!r.ok) throw new Error("GitHub respondió "+r.status+" al leer el archivo. Revisá el token, el usuario y el repositorio.");
+    return r.json();
+  }).then(function(existing){
+    var body = { message:"Actualizar catalog.json desde MI CINE", content:b64encode(catalogJSONText()), branch:cfg.branch };
+    if(existing && existing.sha) body.sha = existing.sha;
+    return fetch(url, {method:"PUT", headers:ghHeaders(cfg.token), body:JSON.stringify(body)});
+  }).then(function(r){
+    if(!r.ok) return r.json().then(function(j){ throw new Error("GitHub respondió "+r.status+": "+((j&&j.message)||"error")); });
+    return r.json();
+  }).then(function(){
+    catalog.forEach(function(m){ delete m.example; });
+    afterCatalogChange();
+    setStatus(st,"ok","✔ <b>Guardado en GitHub.</b> Tu catálogo ya está actualizado en <b>"+esc(cfg.owner)+"/"+esc(cfg.repo)+"</b>. GitHub Pages puede tardar 1 o 2 minutos en mostrar los cambios en https://"+esc(cfg.owner.toLowerCase())+".github.io/"+esc(cfg.repo)+"/");
+  }).catch(function(e){
+    setStatus(st,"err","No se pudo guardar: "+esc(e.message)+"<br>Verificá que el token tenga permiso <b>Contents: Read and write</b> solo sobre el repositorio <b>mi-cine</b> y que la rama sea <b>"+esc(cfg.branch)+"</b>.");
+  });
+}
+function loadFromGithub(){
+  var cfg = ghConfig();
+  var st = $("ghStatus");
+  if(!cfg.token){ setStatus(st,"err","Pegá tu token para traer el catálogo desde GitHub."); return; }
+  setStatus(st,"info","Trayendo catalog.json desde GitHub…");
+  var url = "https://api.github.com/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo)+"/contents/"+encodeURIComponent(cfg.file)+"?ref="+encodeURIComponent(cfg.branch);
+  fetch(url,{headers:ghHeaders(cfg.token)}).then(function(r){
+    if(!r.ok) throw new Error("GitHub respondió "+r.status);
+    return r.json();
+  }).then(function(j){
+    var text = decodeURIComponent(escape(atob((j.content||"").replace(/\n/g,""))));
+    var data = JSON.parse(text);
+    if(!Array.isArray(data)) throw new Error("El archivo no contiene una lista de películas.");
+    catalog = data; afterCatalogChange();
+    setStatus(st,"ok","✔ Catálogo traído desde GitHub: "+data.length+" películas.");
+  }).catch(function(e){ setStatus(st,"err","No se pudo traer el catálogo: "+esc(e.message)); });
+}
+
+/* ================= README ================= */
+var README_TEXT = [
+"# MI CINE","","Mi plataforma personal de películas. Los videos se reproducen con el reproductor de Byse mediante iframe; esta página no guarda archivos de video.","","## Mi página","","https://redmith.github.io/mi-cine/","","Repositorio: https://github.com/Redmith/mi-cine","","## Estructura","","```","mi-cine/","├── index.html    Página web, diseño y funcionalidades","├── catalog.json  Base de datos del catálogo","└── README.md     Estas instrucciones","```","","## Instalación","","1. Creá el repositorio `mi-cine` en GitHub.","2. Subí `index.html`, `catalog.json` y `README.md`.","3. Activá GitHub Pages: Settings → Pages → Branch `main` / `(root)` → Save.","4. Abrí https://redmith.github.io/mi-cine/","","## Agregar películas","","1. Subí el video a Byse y copiá el código iframe.","2. En la página, entrá a **Administrar** y completá título, año, género, portada, descripción y el código de inserción.","3. Pegá tu token de GitHub (solo repo `mi-cine`, Contents: Read and write) y tocá **Guardar en GitHub**.","4. El token se mantiene solo en la memoria de la pestaña: no se guarda en ningún archivo.","","## Importante","","- GitHub Pages es público: el catálogo y sus enlaces los puede ver cualquier visitante.","- GitHub Pages no tiene base de datos privada ni autenticación propia."
+].join("\n");
+
+/* ================= Vistas y eventos ================= */
+function showView(which){
+  var isAdmin = which==="admin";
+  $("viewAdmin").classList.toggle("hidden", !isAdmin);
+  $("viewCatalogo").classList.toggle("hidden", isAdmin);
+  $("navAdmin").classList.toggle("active", isAdmin);
+  $("navCatalogo").classList.toggle("active", !isAdmin);
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function downloadFile(name, text, type){
+  var blob = new Blob([text], {type:type||"application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  $("readmePreview").textContent = README_TEXT;
+  loadCatalog();
+
+  $("heroPrev").addEventListener("click", function(){ goToHero(heroIndex - 1, -1); restartHeroTimer(); });
+  $("heroNext").addEventListener("click", function(){ goToHero(heroIndex + 1, 1); restartHeroTimer(); });
+  $("heroSection").addEventListener("mouseenter", function(){ heroHoverPause = true; });
+  $("heroSection").addEventListener("mouseleave", function(){ heroHoverPause = false; });
+  $("heroSection").addEventListener("focusin", function(){ heroHoverPause = true; });
+  $("heroSection").addEventListener("focusout", function(){ heroHoverPause = false; });
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) restartHeroTimer(); });
+
+  $("navCatalogo").addEventListener("click", function(){ showView("catalogo"); });
+  $("navAdmin").addEventListener("click", function(){ showView("admin"); });
+  $("searchInput").addEventListener("input", function(){ if($("viewCatalogo").classList.contains("hidden")) showView("catalogo"); renderGrid(); });
+  $("sortSelect").addEventListener("change", renderGrid);
+  $("favFilter").addEventListener("click", function(){
+    onlyFavs = !onlyFavs;
+    this.classList.toggle("active", onlyFavs);
+    if(onlyFavs){ activeGenre="Favoritos"; } else if(activeGenre==="Favoritos"){ activeGenre="Todas"; }
+    renderChips(); renderGrid();
+  });
+
+  $("closePlayer").addEventListener("click", closePlayer);
+  $("playerModal").addEventListener("click", function(e){ if(e.target===this) closePlayer(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") closePlayer(); });
+  $("modalFav").addEventListener("click", function(){ if(currentModalId) toggleFav(currentModalId); });
+
+  $("fEmbed").addEventListener("input", updateEmbedPreview);
+  $("cancelEdit").addEventListener("click", function(){ resetForm(); clearStatus($("formStatus")); });
+
+  $("movieForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var title = $("fTitle").value.trim();
+    var year = parseInt($("fYear").value,10);
+    var src = extractEmbedSrc($("fEmbed").value);
+    if(!title || !year){ setStatus($("formStatus"),"err","Completá el título y el año."); return; }
+    if(!src){ setStatus($("formStatus"),"err","No se encontró la dirección del reproductor en el código pegado. Pegá el iframe completo de Byse, por ejemplo: &lt;iframe src=\"https://bysetayico.com/e/…\"&gt;"); return; }
+    var data = { title:title, year:year, genre:$("fGenre").value, poster:$("fPoster").value.trim(),
+                 desc:$("fDesc").value.trim(), embed:$("fEmbed").value.trim(), featured:$("fFeatured").value==="si" };
+    // Puede haber varias destacadas: rotan en la portada, 3 segundos cada una.
+    if(editingId){
+      var m = findMovie(editingId);
+      if(m){ for(var k in data) m[k]=data[k]; delete m.example; }
+      setStatus($("formStatus"),"ok","✔ Película actualizada en el catálogo. Para publicarla, tocá «Guardar en GitHub» acá al lado.");
+    } else {
+      data.id = "peli-" + Date.now();
+      catalog.push(data);
+      setStatus($("formStatus"),"ok","✔ «"+esc(title)+"» se agregó al catálogo. Para publicarla, tocá «Guardar en GitHub» acá al lado.");
+    }
+    resetForm(); afterCatalogChange();
+  });
+
+  $("deleteYes").addEventListener("click", function(){
+    if(pendingDeleteId){
+      catalog = catalog.filter(function(m){ return m.id!==pendingDeleteId; });
+      if(lastPlayedId===pendingDeleteId) lastPlayedId=null;
+      pendingDeleteId = null;
+      $("deleteBar").classList.remove("show");
+      afterCatalogChange();
+    }
+  });
+  $("deleteNo").addEventListener("click", function(){ pendingDeleteId=null; $("deleteBar").classList.remove("show"); });
+
+  // Token: solo vive en esta variable de memoria
+  $("ghToken").addEventListener("input", function(){ githubToken = this.value.trim(); });
+  $("btnGithubSave").addEventListener("click", saveToGithub);
+  $("btnGithubLoad").addEventListener("click", loadFromGithub);
+
+  $("btnDownloadCatalog").addEventListener("click", function(){
+    downloadFile("catalog.json", catalogJSONText());
+    setStatus($("dlStatus"),"ok","✔ Se descargó <b>catalog.json</b>. Subilo al repositorio Redmith/mi-cine para publicar los cambios.");
+  });
+  $("btnCopyCatalog").addEventListener("click", function(){
+    var done = function(){ setStatus($("dlStatus"),"ok","✔ catalog.json copiado. Pegalo en el editor del archivo en GitHub y guardá el commit."); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(catalogJSONText()).then(done, function(){ setStatus($("dlStatus"),"err","Tu navegador no dejó copiar. Usá «Descargar catalog.json»."); }); }
+    else setStatus($("dlStatus"),"err","Tu navegador no dejó copiar. Usá «Descargar catalog.json».");
+  });
+  $("btnDownloadReadme").addEventListener("click", function(){
+    downloadFile("README.md", README_TEXT, "text/markdown");
+    setStatus($("dlStatus"),"ok","✔ Se descargó <b>README.md</b> con las instrucciones para Redmith/mi-cine.");
+  });
+});
+</script>
+</body>
+</html>
