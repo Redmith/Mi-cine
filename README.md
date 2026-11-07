@@ -22,7 +22,7 @@ mi-cine/
 1. Creá el repositorio `mi-cine` en GitHub.
 2. Subí `index.html`, `catalog.json` y `README.md`.
 3. Activá GitHub Pages: Settings → Pages → Branch `main` / `(root)` → Save.
-4. Abrí https://redmith.github.io/mi-cine/
+4. Abrí https://redmith.github.io/Mi-cine/
 
 ## Agregar películas
 
