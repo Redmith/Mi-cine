@@ -1,0 +1,1204 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" href="data:," />
+<title>MI CINE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c0c; --bg2:#0c0c0c; --surface:#121212; --surface2:#171717; --line:#222222;
+    --text:#e3e3e3; --muted:#8f8f93; --muted2:#626266;
+    --accent:#ececec; --accent-ink:#111112;
+    --radius:3px; --radius-sm:2px;
+    --serif:"Newsreader",Georgia,"Times New Roman",serif;
+    --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  html{ color-scheme:dark; scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,p{ margin:0; }
+  button{ font:inherit; cursor:pointer; }
+  input,select,textarea{ font:inherit; }
+  a{ color:#d9d9dc; }
+  :focus-visible{ outline:2px solid #e8e8e8; outline-offset:2px; border-radius:4px; }
+
+  /* ---------- Header ---------- */
+  .topbar{ position:sticky; top:0; z-index:40; background:var(--bg); border-bottom:1px solid var(--line); }
+  .topbar-in{ max-width:1180px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .brand{ font-family:var(--serif); font-size:19px; font-weight:600; letter-spacing:.1em; line-height:1; color:#fff; white-space:nowrap; }
+  .nav{ display:flex; gap:4px; }
+  .nav button{ background:transparent; border:0; border-bottom:1px solid transparent; color:var(--muted); padding:6px 8px; font-weight:500; font-size:13.5px; }
+  .nav button.active{ color:#fff; border-bottom-color:#fff; }
+  .searchbox{ margin-left:auto; flex:1 1 220px; max-width:340px; position:relative; }
+  .searchbox input{ width:100%; box-sizing:border-box; background:transparent; border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:8px 12px 8px 34px; font-size:14px; }
+  .searchbox input::placeholder{ color:var(--muted2); }
+  .searchbox svg{ position:absolute; left:13px; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:var(--muted); }
+
+  main{ max-width:1180px; margin:0 auto; padding:0 16px 56px; }
+
+  /* ---------- Destacadas (carrusel) ---------- */
+  .hero{ margin:22px 0 4px; padding:2px 0 18px; border-bottom:1px solid var(--line); }
+  .hero-stage{ overflow:hidden; }
+  .hero-slide{ box-sizing:border-box; display:flex; gap:24px; align-items:flex-start; }
+  .hero-poster{ width:176px; flex:none; aspect-ratio:2/3; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:var(--surface); position:relative; }
+  .hero-poster img{ width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:1; }
+  .hero-content{ max-width:620px; padding-top:2px; }
+  .hero-controls{ display:flex; align-items:center; gap:14px; margin-top:16px; }
+  .hero-dots{ display:flex; gap:8px; align-items:center; }
+  .hero-dot{ width:26px; height:3px; border:0; padding:0; background:#333335; border-radius:2px; }
+  .hero-dot.active{ background:#ececec; }
+  .hero-counter{ color:var(--muted2); font-size:12.5px; font-weight:500; }
+  .hero-arrows{ margin-left:auto; display:flex; gap:6px; }
+  .hero-arrow{ width:32px; height:32px; background:transparent; border:1px solid var(--line); color:#cfcfd2; border-radius:var(--radius-sm); font-size:17px; line-height:1; display:flex; align-items:center; justify-content:center; }
+  .hero-arrow:hover{ border-color:#4a4a4d; color:#fff; }
+
+  .hero-tag{ font-size:12px; font-weight:500; color:var(--muted2); }
+  .hero-title{ font-family:var(--serif); font-size:clamp(26px,3.6vw,32px); font-weight:600; line-height:1.12; margin:6px 0 6px; }
+  .hero-meta{ color:var(--muted); font-weight:500; font-size:13px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .hero-meta .dot{ width:3px; height:3px; border-radius:50%; background:var(--muted2); }
+  .hero-desc{ color:#b9b9bd; margin:8px 0 16px; font-size:14.5px; line-height:1.65; }
+  .btn{ border:1px solid transparent; border-radius:var(--radius-sm); padding:9px 15px; font-weight:500; font-size:14px; display:inline-flex; align-items:center; gap:8px; }
+  .btn svg{ width:15px; height:15px; }
+  .btn-red{ background:transparent; color:#fff; border-color:#55555a; }
+  .btn-red:hover{ border-color:#8a8a90; background:#161616; }
+  .btn-ghost{ background:transparent; color:#cfcfd2; border-color:#2e2e30; }
+  .btn-ghost:hover{ border-color:#4a4a4d; color:#fff; }
+  .btn-dark{ background:transparent; color:#fff; border-color:var(--line); }
+  .btn-dark:hover{ border-color:#3d3d3e; }
+  .btn-sm{ padding:8px 13px; font-size:13px; }
+
+  /* ---------- Secciones ---------- */
+  .section-head{ display:flex; align-items:baseline; gap:12px; margin:26px 0 12px; flex-wrap:wrap; }
+  .section-head h2{ font-family:var(--sans); font-size:16px; font-weight:600; }
+  .section-head p{ color:var(--muted); font-size:13px; }
+
+  .chips{ display:flex; gap:2px 18px; flex-wrap:wrap; margin:16px 0 2px; }
+  .chip{ background:transparent; border:0; border-bottom:1px solid transparent; color:var(--muted); padding:6px 1px; border-radius:0; font-weight:500; font-size:13.5px; }
+  .chip.active{ background:transparent; color:#fff; border-bottom-color:#fff; }
+  .toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0 2px; }
+  .toolbar label{ font-size:13px; color:var(--muted); font-weight:500; }
+  .toolbar select{ background:transparent; border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:8px 10px; font-size:13.5px; }
+  .count-label{ margin-left:auto; color:var(--muted2); font-size:12.5px; font-weight:500; }
+
+  /* ---------- Grid de películas ---------- */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(164px,1fr)); gap:20px 14px; margin-top:12px; }
+  .card{ background:transparent; border:0; text-align:left; padding:0; color:inherit; }
+  .poster{ position:relative; aspect-ratio:2/3; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:var(--surface); }
+  .poster img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .poster-art{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:14px; }
+  .poster-art .pa-genre{ font-size:10.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; opacity:.5; }
+  .poster-art .pa-title{ font-family:var(--sans); font-size:20px; font-weight:600; line-height:1.15; margin-top:5px; }
+  .poster-art .pa-year{ margin-top:5px; font-weight:500; font-size:12px; opacity:.6; }
+  .card:hover .poster{ border-color:#333334; }
+  .fav-btn{ position:absolute; top:6px; right:6px; width:28px; height:28px; border:0; background:transparent; display:flex; align-items:center; justify-content:center; z-index:2; }
+  .fav-btn svg{ width:15px; height:15px; fill:none; stroke:#cfcfcf; stroke-width:2; }
+  .fav-btn.on{ background:transparent; }
+  .fav-btn.on svg{ fill:#fff; stroke:#fff; }
+  .card-info{ padding:8px 1px 0; }
+  .card-info h3{ font-size:14px; line-height:1.3; font-weight:600; }
+  .card-info p{ color:var(--muted); font-size:12.5px; margin-top:2px; font-weight:500; }
+  .empty{ border:1px dashed #2c2c2c; border-radius:var(--radius); padding:34px 20px; text-align:center; color:var(--muted); margin-top:16px; line-height:1.6; }
+  .empty strong{ color:#fff; display:block; font-size:17px; margin-bottom:4px; }
+
+  /* Continuar viendo */
+  .continue-card{ display:flex; gap:16px; align-items:center; background:transparent; border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-top:12px; flex-wrap:wrap; }
+  .continue-card .mini-poster{ width:64px; height:92px; border-radius:2px; flex:none; position:relative; overflow:hidden; border:1px solid var(--line); }
+  .continue-card .mini-poster img{ width:100%; height:100%; object-fit:cover; }
+  .continue-card h3{ font-size:17px; }
+  .continue-card p{ color:var(--muted); font-size:13.5px; margin-top:3px; }
+
+  /* ---------- Modal reproductor ---------- */
+  .modal-back{ position:fixed; inset:0; background:rgba(0,0,0,.82); z-index:80; display:none; align-items:flex-start; justify-content:center; overflow-y:auto; padding:22px 12px; box-sizing:border-box; }
+  .modal-back.open{ display:flex; }
+  .modal{ background:var(--bg2); border:1px solid var(--line); border-radius:6px; width:100%; max-width:920px; overflow:hidden; }
+  .player-wrap{ aspect-ratio:16/9; background:#000; position:relative; }
+  .player-wrap iframe{ width:100%; height:100%; border:0; display:block; }
+  .player-empty{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; gap:8px; color:var(--muted); line-height:1.6; }
+  .player-empty strong{ color:#fff; font-size:18px; }
+  .player-empty code{ background:var(--surface2); padding:2px 7px; border-radius:6px; color:#d9d9dc; font-size:13px; }
+  .modal-body{ padding:20px 22px 24px; }
+  .modal-body h2{ font-family:var(--serif); font-size:26px; font-weight:600; line-height:1.15; }
+  .modal-meta{ color:var(--muted); font-weight:500; font-size:13.5px; margin:8px 0 10px; display:flex; gap:10px; flex-wrap:wrap; }
+  .modal-desc{ color:#c9c9cd; line-height:1.65; font-size:15px; }
+  .modal-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+  .modal-close-row{ display:flex; justify-content:flex-end; padding:10px 12px 0; }
+  .icon-btn{ background:transparent; border:1px solid var(--line); color:#fff; width:36px; height:36px; border-radius:var(--radius-sm); font-size:16px; line-height:1; }
+
+  /* ---------- Administrar ---------- */
+  .admin-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px; align-items:start; }
+  .panel{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; }
+  .panel h3{ font-size:16px; font-weight:600; margin-bottom:4px; }
+  .panel .sub{ color:var(--muted); font-size:13.5px; line-height:1.55; margin-bottom:14px; }
+  .field{ margin-bottom:13px; }
+  .field label{ display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:#e3e3e6; }
+  .field label span{ color:var(--muted2); font-weight:600; }
+  .field input,.field select,.field textarea{ width:100%; box-sizing:border-box; background:var(--bg2); border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:10px 11px; font-size:14.5px; }
+  .field textarea{ min-height:86px; resize:vertical; }
+  .field .hint{ font-size:12.5px; color:var(--muted2); margin-top:5px; line-height:1.5; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .status{ border-radius:var(--radius-sm); padding:12px 14px; font-size:14px; line-height:1.55; margin-top:12px; display:none; }
+  .status.show{ display:block; }
+  .status.ok{ background:#131711; border:1px solid #2a3324; color:#c4cfba; }
+  .status.err{ background:#171111; border:1px solid #3d2626; color:#d3b8b8; }
+  .status.info{ background:#121417; border:1px solid #2a2f36; color:#c2c9d1; }
+  .gh-line{ display:flex; align-items:center; gap:10px; background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius-sm); padding:11px 13px; font-size:14px; margin-bottom:12px; flex-wrap:wrap; }
+  .gh-line code{ color:#d9d9dc; font-size:13.5px; word-break:break-all; }
+  .admin-list{ display:flex; flex-direction:column; gap:10px; }
+  .admin-item{ display:flex; gap:12px; align-items:center; background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius); padding:10px 12px; }
+  .admin-item .thumb{ width:44px; height:64px; border-radius:2px; flex:none; overflow:hidden; position:relative; border:1px solid var(--line); }
+  .admin-item .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .admin-item h4{ font-size:14.5px; margin:0; }
+  .admin-item p{ color:var(--muted); font-size:12.5px; margin-top:2px; }
+  .admin-item .acts{ margin-left:auto; display:flex; gap:6px; flex:none; }
+  .mini-btn{ background:transparent; border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:8px 11px; font-size:12.5px; font-weight:600; }
+  .mini-btn.danger{ color:#cfa3a3; border-color:#3d2626; }
+  .steps{ margin:0; padding-left:20px; color:#d5d5dd; line-height:1.75; font-size:14.5px; }
+  .steps code{ background:var(--surface2); padding:1px 6px; border-radius:5px; font-size:13px; color:#d9d9dc; }
+  pre.readme{ background:#0a0a0a; border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px; overflow-x:auto; font-size:12.5px; line-height:1.6; color:#c2c2c9; white-space:pre-wrap; word-break:break-word; max-height:320px; overflow-y:auto; }
+  .confirm-bar{ display:none; background:#171111; border:1px solid #3d2626; color:#d3b8b8; border-radius:var(--radius-sm); padding:12px 14px; font-size:14px; margin-top:12px; line-height:1.55; }
+  .confirm-bar.show{ display:block; }
+  .confirm-bar .row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  /* ---------- Magnet / Torrent ---------- */
+  .magnet-wrap{ max-width:860px; margin-top:22px; }
+  .magnet-panel{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; margin-bottom:18px; }
+  .magnet-panel h3{ font-size:16px; font-weight:600; margin-bottom:4px; }
+  .magnet-panel .sub{ color:var(--muted); font-size:13.5px; line-height:1.55; margin-bottom:14px; }
+  .magnet-input-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .magnet-input-row input{ flex:1 1 320px; box-sizing:border-box; background:var(--bg2); border:1px solid var(--line); color:#fff; border-radius:var(--radius-sm); padding:11px 12px; font-size:14px; }
+  .magnet-video-wrap{ background:#000; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; }
+  .magnet-video-wrap video{ width:100%; height:100%; display:block; background:#000; }
+  .magnet-video-empty{ color:var(--muted); text-align:center; padding:24px; line-height:1.6; font-size:14px; }
+  .magnet-video-empty strong{ color:#fff; display:block; font-size:16px; margin-bottom:4px; }
+  .magnet-meta{ display:grid; grid-template-columns:1fr 110px 170px; gap:12px; }
+  .sub-list{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+  .sub-item{ display:flex; gap:10px; align-items:center; background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; font-size:13.5px; }
+  .sub-item span{ color:var(--muted); font-size:12.5px; }
+  .sub-item button{ margin-left:auto; flex:none; }
+  .progress-line{ height:3px; background:#222; border-radius:2px; overflow:hidden; margin-top:10px; }
+  .progress-line i{ display:block; height:100%; background:#ececec; width:0%; transition:width .4s ease; }
+  @media (max-width:700px){ .magnet-meta{ grid-template-columns:1fr; } }
+
+  .hidden{ display:none !important; }
+  footer{ border-top:1px solid var(--line); margin-top:44px; }
+  .footer-in{ max-width:1180px; margin:0 auto; padding:20px 16px 30px; color:var(--muted2); font-size:12.5px; line-height:1.7; }
+  .footer-in strong{ color:var(--muted); }
+
+  @media (max-width:860px){
+    .admin-grid{ grid-template-columns:1fr; }
+    .hero-slide{ flex-direction:column; gap:14px; }
+    .hero-poster{ width:150px; }
+    .brand{ font-size:18px; }
+    .searchbox{ order:3; max-width:none; flex-basis:100%; margin-left:0; }
+  }
+  @media (max-width:480px){
+    .grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px 10px; }
+    .field-row{ grid-template-columns:1fr; }
+  }
+  /* Smart TV: foco grande y tarjetas más legibles a distancia */
+  @media (min-width:1600px){
+    body{ font-size:18px; }
+    .grid{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
+    .card:focus-visible{ outline-width:5px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">MI CINE</div>
+    <nav class="nav" aria-label="Secciones">
+      <button id="navCatalogo" class="active" type="button">Catálogo</button>
+      <button id="navMagnet" type="button">Magnet</button>
+      <button id="navAdmin" type="button">Administrar</button>
+    </nav>
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="searchInput" type="search" placeholder="Buscar películas…" aria-label="Buscar películas" />
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ VISTA CATÁLOGO ============ -->
+  <div id="viewCatalogo">
+    <section class="hero" id="heroSection" aria-label="Películas destacadas">
+      <div class="hero-stage" id="heroStage"></div>
+      <div class="hero-controls hidden" id="heroControls">
+        <div class="hero-dots" id="heroDots" role="group" aria-label="Elegir destacada"></div>
+        <span class="hero-counter" id="heroCounter"></span>
+        <div class="hero-arrows">
+          <button class="hero-arrow" id="heroPrev" type="button" aria-label="Destacada anterior">‹</button>
+          <button class="hero-arrow" id="heroNext" type="button" aria-label="Destacada siguiente">›</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="continueSection" class="hidden" aria-label="Continuar viendo">
+      <div class="section-head"><h2>Continuar viendo</h2><p>La última película que abriste en esta pestaña.</p></div>
+      <div class="continue-card" id="continueCard"></div>
+    </section>
+
+    <div class="chips" id="genreChips" role="group" aria-label="Filtrar por género"></div>
+
+    <div class="toolbar">
+      <label for="sortSelect">Ordenar</label>
+      <select id="sortSelect">
+        <option value="az">Alfabético (A–Z)</option>
+        <option value="year-desc">Año: más nuevas</option>
+        <option value="year-asc">Año: más viejas</option>
+        <option value="added">Últimas agregadas</option>
+      </select>
+      <button class="chip" id="favFilter" type="button">★ Solo favoritos</button>
+      <span class="count-label" id="countLabel"></span>
+    </div>
+
+    <section aria-label="Catálogo de películas">
+      <div class="section-head"><h2>Catálogo</h2><p id="catalogSource"></p></div>
+      <div class="grid" id="movieGrid"></div>
+      <div class="empty hidden" id="emptyState">
+        <strong>No se encontró ninguna película</strong>
+        Probá con otra búsqueda o cambiá el filtro de género. También podés agregar películas desde <b>Administrar</b>.
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ VISTA MAGNET ============ -->
+  <div id="viewMagnet" class="hidden">
+    <div class="section-head"><h2>Reproducir magnet o torrent</h2><p>Pegá un magnet o un enlace a un archivo .torrent que ya tengas. Se reproduce por streaming y busca el subtítulo solo.</p></div>
+    <div class="magnet-wrap">
+      <section class="magnet-panel" aria-label="Pegar enlace magnet o torrent">
+        <h3>Enlace magnet, enlace .torrent o archivo</h3>
+        <p class="sub">La reproducción es por streaming en tu navegador con WebTorrent: no se descarga ningún archivo a esta página. Funciona mejor con videos en MP4 o WebM que tengan pares conectados por WebRTC; un video en MKV puede no reproducirse en el navegador. Al cargar el torrent, la página detecta el título y el año desde el nombre del torrent y busca subtítulos en español en OpenSubtitles y aplica el más descargado, sin que tengas que escribir el nombre ni buscarlo en otra página. Si querés, igual podés corregirlo abajo antes de buscar de nuevo.</p>
+        <div class="field">
+          <label for="magnetInput">Enlace magnet o enlace al archivo .torrent</label>
+          <div class="magnet-input-row">
+            <input id="magnetInput" placeholder="magnet:?xt=urn:btih:…  o  https://ejemplo.com/pelicula.torrent" autocomplete="off" spellcheck="false" />
+            <button class="btn btn-ghost btn-sm" id="btnPasteMagnet" type="button">Pegar</button>
+          </div>
+          <p class="hint">Acepta dos formatos: un enlace que empiece con <b>magnet:?</b> o un enlace directo que empiece con <b>https://</b> y apunte a un archivo <b>.torrent</b>. Al pegarlo, el título para los subtítulos se completa solo.</p>
+          <p class="hint">También podés cargar un archivo .torrent desde tu equipo:</p>
+          <input id="torrentFile" type="file" accept=".torrent,application/x-bittorrent" style="margin-top:6px;color:var(--muted);font-size:13.5px" />
+        </div>
+        <div class="magnet-meta">
+          <div class="field" style="margin:0">
+            <label for="subTitleGuess">Título para buscar subtítulos <span style="color:var(--muted2);font-weight:500">(se completa solo)</span></label>
+            <input id="subTitleGuess" placeholder="Se detecta solo desde el torrent" />
+          </div>
+          <div class="field" style="margin:0">
+            <label for="subYearGuess">Año <span style="color:var(--muted2);font-weight:500">(automático)</span></label>
+            <input id="subYearGuess" inputmode="numeric" placeholder="2014" />
+          </div>
+          <div class="field" style="margin:0">
+            <label for="subLang">Idioma del subtítulo</label>
+            <select id="subLang">
+              <option value="spa" selected>Español (primero)</option>
+              <option value="eng">Inglés</option>
+              <option value="por">Portugués</option>
+            </select>
+          </div>
+        </div>
+        <p class="hint" style="font-size:12.5px;color:var(--muted2);margin-top:8px;line-height:1.5">No tenés que escribir nada: al cargar el torrent, el título y el año se detectan desde su nombre y la búsqueda de subtítulos arranca sola. Si la detección no coincide, corregí el título o el año acá y tocá «Solo buscar subtítulos».</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+          <button class="btn btn-red" id="btnPlayMagnet" type="button">▶ Reproducir y buscar subtítulos</button>
+          <button class="btn btn-dark" id="btnSearchSubsOnly" type="button">Solo buscar subtítulos</button>
+          <button class="btn btn-ghost" id="btnStopMagnet" type="button">Detener</button>
+        </div>
+        <div class="progress-line hidden" id="magnetProgressWrap"><i id="magnetProgressBar"></i></div>
+        <div class="status" id="magnetStatus"></div>
+      </section>
+
+      <section class="magnet-panel" aria-label="Reproductor magnet">
+        <h3 id="magnetTitle">Reproductor</h3>
+        <p class="sub" id="magnetInfo">Todavía no hay nada reproduciéndose.</p>
+        <div class="magnet-video-wrap" id="magnetVideoWrap">
+          <div class="magnet-video-empty" id="magnetVideoEmpty"><strong>Listo para reproducir</strong>Pegá un magnet o un enlace .torrent arriba y tocá «Reproducir y buscar subtítulos».</div>
+          <video id="magnetVideo" controls playsinline class="hidden" crossorigin="anonymous"></video>
+        </div>
+      </section>
+
+      <section class="magnet-panel" aria-label="Subtítulos">
+        <h3>Subtítulos</h3>
+        <p class="sub" id="subStatus">Cuando empiece la reproducción, acá se busca y se aplica el subtítulo automáticamente. Si el primero no sincroniza, elegí otro de la lista.</p>
+        <div class="sub-list" id="subResults"></div>
+        <div class="field" style="margin-top:16px">
+          <label for="srtFile">Respaldo: cargar un .srt o .vtt tuyo</label>
+          <input id="srtFile" type="file" accept=".srt,.vtt,text/plain" />
+          <p class="hint">Solo si el automático no encuentra nada o no coincide. Normalmente no lo necesitás.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ VISTA ADMINISTRAR ============ -->
+  <div id="viewAdmin" class="hidden">
+    <div class="section-head"><h2>Administrar</h2><p>Completá los datos de la película, pegá tu token y guardá directo en GitHub.</p></div>
+
+    <div class="admin-grid">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <section class="panel" aria-label="Agregar o editar película">
+          <h3 id="formTitle">Agregar película</h3>
+          <p class="sub">Completá los datos y el código que te da Byse. La página extrae sola la dirección del reproductor desde el iframe.</p>
+          <form id="movieForm">
+            <div class="field">
+              <label for="fTitle">Título *</label>
+              <input id="fTitle" required placeholder="Ej.: El secreto de sus ojos" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="fYear">Año *</label>
+                <input id="fYear" required inputmode="numeric" placeholder="2009" />
+              </div>
+              <div class="field">
+                <label for="fGenre">Género *</label>
+                <select id="fGenre">
+                  <option>Acción</option><option>Animación</option><option>Aventura</option>
+                  <option>Ciencia ficción</option><option>Comedia</option><option>Crimen</option>
+                  <option>Documental</option><option>Drama</option><option>Fantasía</option>
+                  <option>Romance</option><option>Suspenso</option><option>Terror</option>
+                  <option>Thriller</option><option>Otro</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="fPoster">Portada <span>(dirección de la imagen, opcional)</span></label>
+              <input id="fPoster" placeholder="https://…/portada.jpg" />
+              <p class="hint">Si lo dejás vacío, MI CINE genera una portada con el título y el género.</p>
+            </div>
+            <div class="field">
+              <label for="fDesc">Descripción</label>
+              <textarea id="fDesc" placeholder="Sinopsis o información de la película…"></textarea>
+            </div>
+            <div class="field">
+              <label for="fEmbed">Código de inserción de Byse *</label>
+              <textarea id="fEmbed" required placeholder='Pegá el iframe completo, ej.: <iframe src="https://bysetayico.com/e/…" …></iframe>'></textarea>
+              <p class="hint" id="embedPreview">Todavía no se detectó ninguna dirección de reproductor.</p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="fFeatured">¿Destacada en la portada?</label>
+                <select id="fFeatured"><option value="no">No</option><option value="si">Sí, destacada</option></select>
+                <p class="hint">Podés destacar varias: rotan en la portada de derecha a izquierda, 3 segundos cada una, con su portada a la vista.</p>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button class="btn btn-dark" id="cancelEdit" type="button" style="width:100%;justify-content:center">Cancelar edición</button>
+              </div>
+            </div>
+            <button class="btn btn-red" type="submit" style="width:100%;justify-content:center" id="submitMovie">＋ Agregar al catálogo</button>
+            <div class="status" id="formStatus"></div>
+          </form>
+        </section>
+
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <section class="panel" aria-label="Guardar en GitHub">
+          <h3>Guardar en GitHub</h3>
+          <p class="sub">Pegá tu token y tocá el botón: el catálogo se sube directo a <code>catalog.json</code> de tu repositorio <b>Redmith/Mi-cine</b>. El token se mantiene <b>solo en la memoria de esta pestaña</b>: no se guarda en ningún archivo ni en el navegador.</p>
+          <div class="field">
+            <label for="ghToken">Token de GitHub</label>
+            <input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_… (solo repo mi-cine, Contents: Read and write)" />
+            <p class="hint">Token de grano fino: acceso únicamente al repositorio <b>mi-cine</b>, permiso <b>Contents: Read and write</b>, sin permisos administrativos.</p>
+          </div>
+          <button class="btn btn-red" id="btnGithubSave" type="button" style="width:100%;justify-content:center">Guardar en GitHub</button>
+          <div class="status" id="ghStatus"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-in">
+    <strong>MI CINE</strong> — Tu plataforma personal de películas. Los videos no se guardan en esta página: se reproducen con el reproductor de Byse mediante iframe. El catálogo vive en <strong>catalog.json</strong>, en el repositorio <strong>Redmith/mi-cine</strong> de GitHub.
+  </div>
+</footer>
+
+<!-- Modal reproductor -->
+<div class="modal-back" id="playerModal" role="dialog" aria-modal="true" aria-label="Reproductor">
+  <div class="modal">
+    <div class="modal-close-row"><button class="icon-btn" id="closePlayer" type="button" aria-label="Cerrar reproductor">✕</button></div>
+    <div class="player-wrap" id="playerWrap"></div>
+    <div class="modal-body">
+      <h2 id="modalTitle">—</h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost btn-sm" id="modalFav" type="button">☆ Marcar favorito</button>
+        <button class="btn btn-dark btn-sm" id="modalEdit" type="button">Editar en Administrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/webtorrent@1.9.7/webtorrent.min.js"></script>
+<script>
+/* Carga de WebTorrent con servidores alternativos.
+   La versión 2.x ya no publica el archivo clásico en la raíz del paquete
+   (la URL vieja devolvía 404), por eso se usa la compilación UMD 1.9.7,
+   que define el global WebTorrent. Si un CDN falla, se prueban los demás. */
+(function(){
+  var WT_SOURCES = [
+    "https://cdn.jsdelivr.net/npm/webtorrent@1.9.7/webtorrent.min.js",
+    "https://unpkg.com/webtorrent@1.9.7/webtorrent.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/webtorrent/1.9.7/webtorrent.min.js"
+  ];
+  var wtLoading = null;
+  window.ensureWebTorrent = function(){
+    if(typeof WebTorrent !== "undefined") return Promise.resolve(true);
+    if(wtLoading) return wtLoading;
+    function tryNext(i){
+      if(typeof WebTorrent !== "undefined") return Promise.resolve(true);
+      if(i >= WT_SOURCES.length) return Promise.resolve(false);
+      return new Promise(function(resolve){
+        var s = document.createElement("script");
+        s.src = WT_SOURCES[i];
+        s.onload = function(){ resolve(typeof WebTorrent !== "undefined"); };
+        s.onerror = function(){ resolve(false); };
+        document.head.appendChild(s);
+      }).then(function(ok){ return ok ? true : tryNext(i + 1); });
+    }
+    wtLoading = tryNext(0);
+    wtLoading.then(function(){ wtLoading = null; });
+    return wtLoading;
+  };
+})();
+</script>
+<script>
+/* ================= Datos de ejemplo =================
+   Películas de muestra para probar la página. Podés editarlas
+   o borrarlas desde Administrar y reemplazarlas por las tuyas. */
+var EXAMPLE_CATALOG = [
+  { id:"ej-1", title:"El secreto de sus ojos", year:2009, genre:"Drama", poster:"", featured:true, example:true,
+    desc:"Un empleado judicial jubilado escribe una novela sobre un caso de homicidio que lo marcó 25 años atrás, mientras reaviva un amor que nunca se animó a declarar. Ganadora del Óscar a mejor película extranjera.",
+    embed:'<iframe src="https://bysetayico.com/e/95xobk0jzwqn" frameborder="0" width="640" height="360" allowfullscreen></iframe>' },
+  { id:"ej-2", title:"John Wick 4", year:2023, genre:"Acción", poster:"", featured:false, example:true,
+    desc:"John Wick descubre un camino para derrotar al Alto Consejo, pero antes debe enfrentar a un nuevo enemigo con alianzas en todo el mundo y a viejos amigos convertidos en adversarios.",
+    embed:"" },
+  { id:"ej-3", title:"El Conjuro", year:2013, genre:"Terror", poster:"", featured:false, example:true,
+    desc:"Los investigadores paranormales Ed y Lorraine Warren ayudan a una familia aterrorizada por una presencia oscura en su granja. Basada en un caso real de los años 70.",
+    embed:"" },
+  { id:"ej-4", title:"Relatos salvajes", year:2014, genre:"Comedia", poster:"", featured:true, example:true,
+    desc:"Seis historias argentinas sobre personas comunes que, empujadas al límite por la bronca y la injusticia, pierden el control de la manera más explosiva.",
+    embed:"" },
+  { id:"ej-5", title:"Interestelar", year:2014, genre:"Ciencia ficción", poster:"", featured:true, example:true,
+    desc:"Con la Tierra volviéndose inhabitable, un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.",
+    embed:"" },
+  { id:"ej-6", title:"Coco", year:2017, genre:"Animación", poster:"", featured:false, example:true,
+    desc:"Miguel, un chico que sueña con ser músico, viaja a la Tierra de los Muertos en el Día de Muertos para descubrir la verdadera historia de su familia.",
+    embed:"" },
+  { id:"ej-7", title:"Parásitos", year:2019, genre:"Thriller", poster:"", featured:false, example:true,
+    desc:"Una familia pobre se infiltra poco a poco en la vida de una familia rica de Seúl, hasta que un secreto inesperado pone todo en peligro. Ganadora del Óscar a mejor película.",
+    embed:"" },
+  { id:"ej-8", title:"Mad Max: Furia en el camino", year:2015, genre:"Acción", poster:"", featured:false, example:true,
+    desc:"En un desierto postapocalíptico, Max se une a la fugitiva Furiosa en una huida a toda velocidad del tirano que controla el agua de la región.",
+    embed:"" },
+  { id:"peli-1794078160678", title:"Los simuladores", year:2000, genre:"Otro",
+    poster:"https://image.tmdb.org/t/p/w500/9LFNewnTzahEuZ4YKxEZoMmDeqO.jpg", featured:true,
+    desc:"Cuatro socios resuelven los problemas de sus clientes con operativos de simulación: engaños planificados al detalle para que cada cliente salga beneficiado y el responsable, neutralizado.",
+    embed:'<iframe src="https://bysetayico.com/e/4pzgkfusy4li" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" width="640" height="360" allowfullscreen></iframe>' },
+  { id:"peli-el-incidente", title:"El incidente", year:2014, genre:"Ciencia ficción",
+    poster:"https://image.tmdb.org/t/p/w500/idb1ACZCQAsYJCFMfs9vgyBIbP1.jpg", featured:false,
+    desc:"Dos historias paralelas sobre personas atrapadas en espacios ilógicamente infinitos: dos hermanos y un detective atrapados en unas escaleras infinitas, y una familia atrapada en una carretera infinita… durante 35 años. Ópera prima del mexicano Isaac Ezban.",
+    embed:'<iframe src="https://bysesayeveum.com/e/pc57cft5j9k1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" width="640" height="360" allowfullscreen></iframe>' },
+  { id:"peli-la-invitacion", title:"La invitación", year:2026, genre:"Comedia",
+    poster:"https://image.tmdb.org/t/p/w500/hFLVVF6GSfFkvDlht6iCsCcFjrh.jpg", featured:false,
+    desc:"Una pareja invita a cenar a sus vecinos de arriba y la velada se llena de giros inesperados, emociones reprimidas y una sexualidad inexplorada. Comedia dramática de Olivia Wilde con Seth Rogen, Olivia Wilde, Penélope Cruz y Edward Norton, basada en la obra Los vecinos de arriba, de Cesc Gay.",
+    embed:'<iframe src="https://bysesayeveum.com/e/zn0vgxv2tbuh" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" width="640" height="360" allowfullscreen></iframe>' }
+];
+
+/* Portadas generadas: un solo tono neutro para todo el catálogo */
+var GENRE_COLORS = { "Otro":["#131313","#131313"] };
+
+/* ================= Estado (solo en memoria de esta pestaña) ================= */
+var catalog = [];
+var favorites = {};       // id -> true
+var lastPlayedId = null;  // Continuar viendo
+var activeGenre = "Todas";
+var onlyFavs = false;
+var editingId = null;
+var pendingDeleteId = null;
+var currentModalId = null;
+var githubToken = "";     // NUNCA se guarda fuera de esta variable
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+
+function extractEmbedSrc(raw){
+  if(!raw) return "";
+  var m = String(raw).match(/src\s*=\s*["']([^"']+)["']/i);
+  if(m) return m[1].trim();
+  var url = String(raw).trim();
+  if(/^https?:\/\/\S+$/.test(url)) return url;
+  return "";
+}
+function posterArtHTML(m, small){
+  var c = GENRE_COLORS[m.genre] || GENRE_COLORS["Otro"];
+  if(small){
+    var initial = String(m.title||"?").trim().charAt(0).toUpperCase();
+    return '<div class="poster-art" style="background:'+c[0]+';align-items:center;justify-content:center;padding:6px">'
+      + '<span style="font-size:22px;font-weight:600;line-height:1;color:#d8d8d8">'+esc(initial)+'</span></div>';
+  }
+  var longest = 0;
+  String(m.title||"").split(/\s+/).forEach(function(w){ if(w.length>longest) longest=w.length; });
+  var titleSize = longest>=12 ? 15 : (longest>=10 ? 17 : 20);
+  return '<div class="poster-art" style="background:'+c[0]+'">'
+    + '<span class="pa-genre">'+esc(m.genre)+'</span>'
+    + '<span class="pa-title" style="font-size:'+titleSize+'px">'+esc(m.title)+'</span>'
+    + '<span class="pa-year">'+esc(m.year)+'</span></div>';
+}
+function posterHTML(m, small){
+  if(m.poster){
+    // La portada real va arriba de todo; la generada queda solo como respaldo si la imagen falla.
+    return posterArtHTML(m, small)
+      + '<img src="'+esc(m.poster)+'" alt="Portada de '+esc(m.title)+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.remove()">';
+  }
+  return posterArtHTML(m, small);
+}
+
+/* ================= Carga del catálogo ================= */
+function loadCatalog(){
+  // En GitHub Pages, si existe catalog.json junto a index.html, se usa ese.
+  // Si no (como en esta vista previa), se cargan los ejemplos.
+  fetch("catalog.json",{cache:"no-store"}).then(function(r){
+    if(!r.ok) throw new Error("no");
+    return r.json();
+  }).then(function(data){
+    if(Array.isArray(data) && data.length){ catalog = data; $("catalogSource").textContent = "Cargado desde catalog.json"; }
+    else { catalog = EXAMPLE_CATALOG.slice(); $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar"; }
+    afterCatalogChange();
+  }).catch(function(){
+    catalog = EXAMPLE_CATALOG.slice();
+    $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar";
+    afterCatalogChange();
+  });
+}
+function afterCatalogChange(){ renderHero(); renderChips(); renderGrid(); renderContinue(); }
+
+/* ================= Render ================= */
+/* ================= Destacadas: carrusel automático =================
+   Las destacadas se muestran de a una, 3 segundos cada una, y pasan
+   de derecha a izquierda. Se pausa al pasar el mouse, al enfocar con
+   teclado, cuando la pestaña no se ve o si el sistema pide menos movimiento. */
+var heroIndex = 0;
+var heroTimer = null;
+var heroHoverPause = false;
+
+function featuredMovies(){
+  var list = catalog.filter(function(m){ return m.featured; });
+  if(!list.length) list = catalog.slice(0,1);
+  // Primero las que tienen portada real, para que la portada se vea al entrar.
+  return list.slice().sort(function(a,b){ return (b.poster?1:0) - (a.poster?1:0); });
+}
+function featuredMovie(){
+  var list = featuredMovies();
+  return list.length ? list[Math.min(heroIndex, list.length-1)] : null;
+}
+function heroSlideHTML(m){
+  return '<article class="hero-slide">'
+    + '<div class="hero-poster">'+posterHTML(m,false)+'</div>'
+    + '<div class="hero-content">'
+    + '<span class="hero-tag">Destacada</span>'
+    + '<h1 class="hero-title">'+esc(m.title)+'</h1>'
+    + '<div class="hero-meta"><span>'+esc(m.year)+'</span><span class="dot"></span><span>'+esc(m.genre)+'</span></div>'
+    + '<p class="hero-desc">'+esc(m.desc || "")+'</p>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap">'
+    + '<button class="btn btn-red" data-hero-play="'+esc(m.id)+'" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.5v15l13-7.5z"/></svg> Reproducir</button>'
+    + '<button class="btn btn-ghost" data-hero-fav="'+esc(m.id)+'" type="button">'+(favorites[m.id] ? "★ En favoritos" : "☆ Favorito")+'</button>'
+    + '</div></div></article>';
+}
+function renderHeroSlide(){
+  var list = featuredMovies();
+  if(!list.length) return;
+  var m = list[Math.min(heroIndex, list.length-1)];
+  $("heroStage").innerHTML = heroSlideHTML(m);
+  var plays = $("heroStage").querySelectorAll("[data-hero-play]");
+  for(var i=0;i<plays.length;i++) plays[i].addEventListener("click", function(){ openPlayer(this.getAttribute("data-hero-play")); });
+  var favs = $("heroStage").querySelectorAll("[data-hero-fav]");
+  for(var j=0;j<favs.length;j++) favs[j].addEventListener("click", function(){ toggleFav(this.getAttribute("data-hero-fav")); });
+}
+function renderHero(){
+  var list = featuredMovies();
+  if(!list.length){ $("heroSection").classList.add("hidden"); stopHeroTimer(); return; }
+  $("heroSection").classList.remove("hidden");
+  if(heroIndex >= list.length) heroIndex = 0;
+  if(heroIndex < 0) heroIndex = 0;
+  renderHeroSlide();
+  var multi = list.length > 1;
+  $("heroControls").classList.toggle("hidden", !multi);
+  if(multi){
+    var dots = "";
+    list.forEach(function(m, idx){ dots += '<button class="hero-dot" data-hero-dot="'+idx+'" type="button" aria-label="Ver destacada: '+esc(m.title)+'"></button>'; });
+    $("heroDots").innerHTML = dots;
+    var dotBtns = $("heroDots").querySelectorAll("[data-hero-dot]");
+    for(var k=0;k<dotBtns.length;k++) dotBtns[k].addEventListener("click", function(){ var t = parseInt(this.getAttribute("data-hero-dot"),10); goToHero(t, t>heroIndex ? 1 : -1); restartHeroTimer(); });
+  }
+  updateHeroDots();
+  startHeroTimer();
+}
+function updateHeroDots(){
+  var list = featuredMovies();
+  var dotBtns = $("heroDots").querySelectorAll("[data-hero-dot]");
+  for(var i=0;i<dotBtns.length;i++) dotBtns[i].classList.toggle("active", i===heroIndex);
+  $("heroCounter").textContent = list.length > 1 ? (heroIndex+1) + " de " + list.length : "";
+}
+var heroAnimating = false;
+function goToHero(idx, dir){
+  var list = featuredMovies();
+  if(!list.length || heroAnimating) return;
+  var target = ((idx % list.length) + list.length) % list.length;
+  if(target === heroIndex){ updateHeroDots(); return; }
+  if(dir == null) dir = 1;
+  var stage = $("heroStage");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!stage.animate || reduce){
+    heroIndex = target; renderHeroSlide(); updateHeroDots();
+    return;
+  }
+  // Sale hacia la izquierda y la siguiente entra desde la derecha.
+  heroAnimating = true;
+  var out = stage.animate(
+    [{ transform:"translateX(0)", opacity:"1" }, { transform:"translateX(" + (-64*dir) + "px)", opacity:"0" }],
+    { duration:260, easing:"ease-in" });
+  out.onfinish = function(){
+    heroIndex = target; renderHeroSlide(); updateHeroDots();
+    var inn = stage.animate(
+      [{ transform:"translateX(" + (64*dir) + "px)", opacity:"0" }, { transform:"translateX(0)", opacity:"1" }],
+      { duration:340, easing:"ease-out" });
+    inn.onfinish = function(){ heroAnimating = false; };
+  };
+}
+function nextHero(){ goToHero(heroIndex + 1, 1); }
+function heroAutoplayAllowed(){
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  if(document.hidden) return false;
+  if(heroHoverPause) return false;
+  if(!$("viewCatalogo") || $("viewCatalogo").classList.contains("hidden")) return false;
+  if($("playerModal") && $("playerModal").classList.contains("open")) return false;
+  return featuredMovies().length > 1;
+}
+function startHeroTimer(){
+  stopHeroTimer();
+  heroTimer = setInterval(function(){
+    if(heroAutoplayAllowed()) nextHero();
+  }, 3000);
+}
+function stopHeroTimer(){ if(heroTimer){ clearInterval(heroTimer); heroTimer = null; } }
+function restartHeroTimer(){ startHeroTimer(); }
+function genresList(){
+  var seen = {}, out = [];
+  catalog.forEach(function(m){ if(!seen[m.genre]){ seen[m.genre]=1; out.push(m.genre); } });
+  return out.sort();
+}
+function renderChips(){
+  var html = '<button class="chip'+(activeGenre==="Todas"?" active":"")+'" data-genre="Todas" type="button">Todas</button>';
+  genresList().forEach(function(g){
+    html += '<button class="chip'+(activeGenre===g?" active":"")+'" data-genre="'+esc(g)+'" type="button">'+esc(g)+'</button>';
+  });
+  html += '<button class="chip'+(activeGenre==="Favoritos"?" active":"")+'" data-genre="Favoritos" type="button">★ Favoritos</button>';
+  $("genreChips").innerHTML = html;
+  var chips = $("genreChips").querySelectorAll(".chip");
+  for(var i=0;i<chips.length;i++){
+    chips[i].addEventListener("click", function(){
+      activeGenre = this.getAttribute("data-genre");
+      if(activeGenre==="Favoritos"){ onlyFavs = true; } else { onlyFavs = false; $("favFilter").classList.remove("active"); }
+      renderChips(); renderGrid();
+    });
+  }
+}
+function filteredMovies(){
+  var q = $("searchInput").value.trim().toLowerCase();
+  var list = catalog.filter(function(m){
+    if(activeGenre!=="Todas" && activeGenre!=="Favoritos" && m.genre!==activeGenre) return false;
+    if(onlyFavs && !favorites[m.id]) return false;
+    if(q && (m.title+" "+m.year+" "+m.genre).toLowerCase().indexOf(q)===-1) return false;
+    return true;
+  });
+  var sort = $("sortSelect").value;
+  if(sort==="az") list.sort(function(a,b){ return a.title.localeCompare(b.title,"es"); });
+  if(sort==="year-desc") list.sort(function(a,b){ return (b.year||0)-(a.year||0); });
+  if(sort==="year-asc") list.sort(function(a,b){ return (a.year||0)-(b.year||0); });
+  return list;
+}
+function renderGrid(){
+  var list = filteredMovies();
+  var html = "";
+  list.forEach(function(m){
+    html += '<div class="card" role="button" tabindex="0" data-open="'+esc(m.id)+'" aria-label="Ver '+esc(m.title)+'">'
+      + '<div class="poster">'
+      + '<button class="fav-btn'+(favorites[m.id]?" on":"")+'" data-fav="'+esc(m.id)+'" type="button" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></button>'
+      + posterHTML(m,false)
+      + '</div>'
+      + '<div class="card-info"><h3>'+esc(m.title)+'</h3><p>'+esc(m.year)+' · '+esc(m.genre)+'</p></div></div>';
+  });
+  $("movieGrid").innerHTML = html;
+  $("emptyState").classList.toggle("hidden", list.length>0);
+  $("countLabel").textContent = list.length + (list.length===1 ? " película" : " películas");
+  var cards = $("movieGrid").querySelectorAll("[data-open]");
+  for(var i=0;i<cards.length;i++){
+    cards[i].addEventListener("click", function(e){
+      if(e.target.closest("[data-fav]")) return;
+      openPlayer(this.getAttribute("data-open"));
+    });
+    cards[i].addEventListener("keydown", function(e){
+      if(e.key==="Enter" || e.key===" "){ e.preventDefault(); openPlayer(this.getAttribute("data-open")); }
+    });
+  }
+  var favs = $("movieGrid").querySelectorAll("[data-fav]");
+  for(var j=0;j<favs.length;j++){
+    favs[j].addEventListener("click", function(e){ e.stopPropagation(); toggleFav(this.getAttribute("data-fav")); });
+  }
+}
+function toggleFav(id){
+  if(favorites[id]) delete favorites[id]; else favorites[id]=true;
+  renderGrid(); renderHero();
+  if(currentModalId===id) syncModalFav();
+}
+function renderContinue(){
+  var m = null;
+  for(var i=0;i<catalog.length;i++) if(catalog[i].id===lastPlayedId) m = catalog[i];
+  if(!m){ $("continueSection").classList.add("hidden"); return; }
+  $("continueSection").classList.remove("hidden");
+  $("continueCard").innerHTML =
+      '<div class="mini-poster">'+posterHTML(m,true)+'</div>'
+    + '<div style="flex:1;min-width:200px"><h3>'+esc(m.title)+'</h3><p>'+esc(m.year)+' · '+esc(m.genre)+'</p></div>'
+    + '<button class="btn btn-red btn-sm" id="continuePlay" type="button">▶ Seguir viendo</button>';
+  $("continuePlay").onclick = function(){ openPlayer(m.id); };
+}
+/* ================= Reproductor ================= */
+function findMovie(id){ for(var i=0;i<catalog.length;i++) if(catalog[i].id===id) return catalog[i]; return null; }
+function openPlayer(id){
+  var m = findMovie(id); if(!m) return;
+  currentModalId = id;
+  lastPlayedId = id; renderContinue();
+  var src = extractEmbedSrc(m.embed);
+  $("playerWrap").innerHTML = src
+    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+'"></iframe>'
+    : '<div class="player-empty"><strong>Esta película todavía no tiene reproductor</strong><span>Es una película de ejemplo. Para verla, pegá su código de Byse desde <b>Administrar → Editar</b>.<br>Ejemplo de formato: <code>&lt;iframe src="https://bysetayico.com/e/…"&gt;</code></span></div>';
+  $("modalTitle").textContent = m.title;
+  $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span>';
+  $("modalDesc").textContent = m.desc || "Sin descripción.";
+  syncModalFav();
+  $("modalEdit").onclick = function(){ closePlayer(); showView("admin"); startEdit(id); };
+  $("playerModal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function syncModalFav(){
+  if(!currentModalId) return;
+  $("modalFav").textContent = favorites[currentModalId] ? "★ En favoritos" : "☆ Marcar favorito";
+}
+function closePlayer(){
+  $("playerModal").classList.remove("open");
+  $("playerWrap").innerHTML = ""; // corta la reproducción al cerrar
+  document.body.style.overflow = "";
+  currentModalId = null;
+}
+
+/* ================= Administrar: alta / edición / baja ================= */
+function setStatus(el, type, msg){ el.className = "status show " + type; el.innerHTML = msg; }
+function clearStatus(el){ el.className = "status"; el.textContent = ""; }
+
+function startEdit(id){
+  var m = findMovie(id); if(!m) return;
+  editingId = id;
+  $("fTitle").value = m.title; $("fYear").value = m.year; $("fGenre").value = m.genre;
+  $("fPoster").value = m.poster || ""; $("fDesc").value = m.desc || ""; $("fEmbed").value = m.embed || "";
+  $("fFeatured").value = m.featured ? "si" : "no";
+  $("formTitle").textContent = "Editar película";
+  $("submitMovie").textContent = "Guardar cambios";
+  updateEmbedPreview();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function resetForm(){
+  editingId = null;
+  $("movieForm").reset();
+  $("formTitle").textContent = "Agregar película";
+  $("submitMovie").textContent = "＋ Agregar al catálogo";
+  updateEmbedPreview();
+}
+function updateEmbedPreview(){
+  var src = extractEmbedSrc($("fEmbed").value);
+  $("embedPreview").innerHTML = src
+    ? "✔ Reproductor detectado: <b style='color:#bcdcc9'>" + esc(src) + "</b>"
+    : "Todavía no se detectó ninguna dirección de reproductor.";
+}
+
+/* ================= GitHub ================= */
+function catalogJSONText(){ return JSON.stringify(catalog, null, 2); }
+function b64encode(str){
+  var bytes = new TextEncoder().encode(str);
+  var bin = ""; bytes.forEach(function(b){ bin += String.fromCharCode(b); });
+  return btoa(bin);
+}
+function ghConfig(){
+  return { owner:"Redmith", repo:"mi-cine", branch:"main", file:"catalog.json", token:githubToken };
+}
+function ghHeaders(token){
+  return { "Authorization":"Bearer "+token, "Accept":"application/vnd.github+json", "Content-Type":"application/json", "X-GitHub-Api-Version":"2022-11-28" };
+}
+function saveToGithub(){
+  var cfg = ghConfig();
+  var st = $("ghStatus");
+  if(!cfg.token){ setStatus(st,"err","Primero pegá tu token de GitHub en el campo de arriba. Sin token, GitHub no permite guardar. El token queda solo en la memoria de esta pestaña."); return; }
+  setStatus(st,"info","Conectando con GitHub…");
+  var url = "https://api.github.com/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo)+"/contents/"+encodeURIComponent(cfg.file);
+  fetch(url+"?ref="+encodeURIComponent(cfg.branch), {headers:ghHeaders(cfg.token)}).then(function(r){
+    if(r.status===404) return null; // el archivo todavía no existe: se crea
+    if(!r.ok) throw new Error("GitHub respondió "+r.status+" al leer el archivo. Revisá el token, el usuario y el repositorio.");
+    return r.json();
+  }).then(function(existing){
+    var body = { message:"Actualizar catalog.json desde MI CINE", content:b64encode(catalogJSONText()), branch:cfg.branch };
+    if(existing && existing.sha) body.sha = existing.sha;
+    return fetch(url, {method:"PUT", headers:ghHeaders(cfg.token), body:JSON.stringify(body)});
+  }).then(function(r){
+    if(!r.ok) return r.json().then(function(j){ throw new Error("GitHub respondió "+r.status+": "+((j&&j.message)||"error")); });
+    return r.json();
+  }).then(function(){
+    catalog.forEach(function(m){ delete m.example; });
+    afterCatalogChange();
+    setStatus(st,"ok","✔ <b>Guardado en GitHub.</b> Tu catálogo ya está actualizado en <b>"+esc(cfg.owner)+"/"+esc(cfg.repo)+"</b>. GitHub Pages puede tardar 1 o 2 minutos en mostrar los cambios en https://"+esc(cfg.owner.toLowerCase())+".github.io/"+esc(cfg.repo)+"/");
+  }).catch(function(e){
+    setStatus(st,"err","No se pudo guardar: "+esc(e.message)+"<br>Verificá que el token tenga permiso <b>Contents: Read and write</b> solo sobre el repositorio <b>mi-cine</b> y que la rama sea <b>"+esc(cfg.branch)+"</b>.");
+  });
+}
+/* ================= Magnet + subtítulos automáticos =================
+   Lo más cómodo para el usuario: pega el magnet, la página detecta
+   título y año desde el nombre del torrent, busca en OpenSubtitles
+   (español primero) y aplica el subtítulo más descargado al video. */
+var wtClient = null;
+var wtTorrent = null;
+var wtProgressTimer = null;
+var currentSubBlobUrl = null;
+var lastSubResults = [];
+
+function magnetStatus(type, msg){ setStatus($("magnetStatus"), type, msg); }
+function parseMagnetName(magnet){
+  var name = "";
+  try{
+    var m = String(magnet||"").match(/[?&]dn=([^&]+)/i);
+    if(m) name = decodeURIComponent(m[1].replace(/\+/g," "));
+  }catch(e){}
+  return name;
+}
+function guessTitleYear(rawName){
+  var s = String(rawName||"").replace(/[._]+/g," ").replace(/\s+/g," ").trim();
+  var yearMatch = s.match(/\b(19\d{2}|20\d{2})\b/);
+  var year = yearMatch ? yearMatch[1] : "";
+  var title = s;
+  // Cortar en el año o en etiquetas típicas de calidad / grupo
+  var cut = title.search(/\b(19\d{2}|20\d{2}|480p|720p|1080p|2160p|4k|bluray|brrip|webrip|web-dl|hdtv|x264|x265|hevc|aac|dts|remux|proper|repack|extended|unrated)\b/i);
+  if(cut>2) title = title.slice(0,cut);
+  title = title.replace(/[\[\(\-–—].*$/,"").replace(/\s+/g," ").trim();
+  // Quitar una palabra suelta final que suele ser el grupo
+  return { title: title || s, year: year };
+}
+function fillGuessFromText(text){
+  var g = guessTitleYear(text);
+  if(g.title && !$("subTitleGuess").value.trim()) $("subTitleGuess").value = g.title;
+  else if(g.title && $("subTitleGuess").value.trim()!==g.title) $("subTitleGuess").value = g.title;
+  if(g.year) $("subYearGuess").value = g.year;
+  return g;
+}
+function isMagnetLink(text){ return /^magnet:\?/i.test(String(text||"").trim()); }
+function isHttpLink(text){ return /^https?:\/\/\S+$/i.test(String(text||"").trim()); }
+function isTorrentUrl(text){
+  var t = String(text||"").trim();
+  if(!isHttpLink(t)) return false;
+  // Enlace directo a .torrent o que contenga torrent en la ruta / nombre
+  return /\.torrent(\?|#|$)/i.test(t) || /torrent/i.test(t);
+}
+function nameFromTorrentUrl(url){
+  try{
+    var clean = String(url||"").split("#")[0].split("?")[0];
+    var parts = clean.split("/").filter(Boolean);
+    var last = parts.length ? decodeURIComponent(parts[parts.length-1]) : "";
+    last = last.replace(/\.torrent$/i,"").replace(/\.html?$/i,"");
+    // Si el nombre es muy corto o genérico, usar también el segmento anterior
+    if(!last || last.length<3 || /^(download|file|get|torrent)$/i.test(last)){
+      var qp = String(url||"").match(/[?&](?:file|name|title|dn)=([^&]+)/i);
+      if(qp) last = decodeURIComponent(qp[1].replace(/\+/g," "));
+    }
+    return last;
+  }catch(e){ return ""; }
+}
+function guessFromAnySourceText(text){
+  var t = String(text||"").trim();
+  if(!t) return null;
+  if(isMagnetLink(t)){ var dn = parseMagnetName(t); if(dn) return fillGuessFromText(dn); return null; }
+  if(isHttpLink(t)){ var n = nameFromTorrentUrl(t); if(n) return fillGuessFromText(n); return null; }
+  return null;
+}
+function fetchTorrentFromUrl(url){
+  magnetStatus("info","Descargando el archivo .torrent desde el enlace pegado…");
+  return fetch(url).then(function(r){
+    if(!r.ok) throw new Error("el servidor respondió "+r.status);
+    return r.blob();
+  }).then(function(blob){
+    if(!blob || blob.size<20) throw new Error("el enlace no devolvió un archivo .torrent válido");
+    // WebTorrent acepta un Blob/File; le damos un nombre para detectar el título
+    try{
+      var fname = (nameFromTorrentUrl(url)||"pelicula") + ".torrent";
+      return new File([blob], fname, {type:"application/x-bittorrent"});
+    }catch(e){ return blob; }
+  });
+}
+function playTorrentUrl(url){
+  var n = nameFromTorrentUrl(url); if(n) fillGuessFromText(n);
+  fetchTorrentFromUrl(url).then(function(fileOrBlob){
+    playMagnetSource(fileOrBlob);
+  }).catch(function(e){
+    magnetStatus("err","No se pudo descargar el .torrent desde ese enlace ("+esc(e.message)+"). Muchos sitios bloquean la descarga directa desde otra página. En ese caso, descargá el .torrent a tu equipo y cargalo con el selector de archivo de arriba: al cargarlo, los subtítulos se buscan solos igual.");
+  });
+}
+function srtToVtt(srt){
+  var text = String(srt||"").replace(/\r\n/g,"\n").replace(/\r/g,"\n");
+  if(/^\s*WEBVTT/i.test(text)) return text;
+  text = text.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g,"$1.$2");
+  return "WEBVTT\n\n" + text;
+}
+function applySubtitleText(text, label){
+  var video = $("magnetVideo");
+  if(!video) return;
+  var vtt = srtToVtt(text);
+  var blob = new Blob([vtt],{type:"text/vtt"});
+  if(currentSubBlobUrl) URL.revokeObjectURL(currentSubBlobUrl);
+  currentSubBlobUrl = URL.createObjectURL(blob);
+  // Quitar tracks anteriores
+  var old = video.querySelectorAll("track");
+  for(var i=0;i<old.length;i++) old[i].remove();
+  var track = document.createElement("track");
+  track.kind = "subtitles"; track.label = label||"Español"; track.srclang = $("subLang").value==="eng"?"en":"es"; track.src = currentSubBlobUrl; track.default = true;
+  video.appendChild(track);
+  try{ if(video.textTracks && video.textTracks[0]) video.textTracks[0].mode = "showing"; }catch(e){}
+  $("subStatus").innerHTML = "✔ Subtítulo aplicado: <b style='color:#fff'>"+esc(label||"automático")+"</b>. Si no sincroniza, probá otro de la lista de abajo.";
+}
+function fetchSubtitleFile(url){
+  return fetch(url).then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.arrayBuffer(); }).then(function(buf){
+    var bytes = new Uint8Array(buf);
+    // Si viene comprimido .gz, intentar descomprimir con la API del navegador
+    if(bytes.length>2 && bytes[0]===0x1f && bytes[1]===0x8b && typeof DecompressionStream!=="undefined"){
+      var ds = new DecompressionStream("gzip");
+      var stream = new Blob([buf]).stream().pipeThrough(ds);
+      return new Response(stream).text();
+    }
+    return new TextDecoder("utf-8").decode(buf);
+  });
+}
+function downloadAndApplySub(item){
+  $("subStatus").textContent = "Descargando subtítulo «"+(item.SubFileName||"")+"»…";
+  var urls = [];
+  if(item.SubDownloadLink) urls.push(item.SubDownloadLink);
+  if(item.IDSubtitleFile) urls.push("https://dl.opensubtitles.org/en/download/sub/"+item.IDSubtitleFile);
+  var tryNext = function(idx){
+    if(idx>=urls.length){ $("subStatus").textContent = "No se pudo descargar ese subtítulo automáticamente (el servidor no lo entregó a la página). Probá con otro de la lista."; return; }
+    fetchSubtitleFile(urls[idx]).then(function(text){
+      if(!text || text.length<20) throw new Error("vacío");
+      applySubtitleText(text, item.SubFileName||"OpenSubtitles");
+    }).catch(function(){ tryNext(idx+1); });
+  };
+  tryNext(0);
+}
+function renderSubResults(list){
+  lastSubResults = list||[];
+  var box = $("subResults"); box.innerHTML = "";
+  if(!list.length){ box.innerHTML = '<p style="color:var(--muted);font-size:13.5px;line-height:1.6">Sin resultados para ese título en el idioma elegido. Revisá el título y el año de arriba y tocá «Solo buscar subtítulos», o probá con inglés.</p>'; return; }
+  list.slice(0,8).forEach(function(item, idx){
+    var row = document.createElement("div"); row.className="sub-item";
+    row.innerHTML = "<div><div>"+esc(item.SubFileName||"Subtítulo")+"</div><span>"+esc(item.LanguageName||"")+" · "+esc(item.SubFormat||"srt")+" · "+esc(item.SubDownloadsCnt||0)+" descargas</span></div>";
+    var b = document.createElement("button"); b.className="mini-btn"; b.type="button"; b.textContent = idx===0 ? "Aplicado / Reaplicar" : "Aplicar";
+    b.addEventListener("click", function(){ downloadAndApplySub(item); });
+    row.appendChild(b); box.appendChild(row);
+  });
+}
+function searchSubtitlesAuto(){
+  var title = $("subTitleGuess").value.trim();
+  var year = $("subYearGuess").value.trim();
+  var lang = $("subLang").value;
+  var langName = lang==="spa"?"español":(lang==="eng"?"inglés":"portugués");
+  if(!title){ $("subStatus").textContent = "Falta el título: pegá un magnet para detectarlo o escribilo en el campo de título."; return Promise.resolve([]); }
+  $("subStatus").textContent = "Buscando subtítulos en "+langName+" para «"+title+"»"+(year?" ("+year+")":"")+" en OpenSubtitles…";
+  var url = "https://rest.opensubtitles.org/search/query-"+encodeURIComponent(title)+(year?"/year-"+encodeURIComponent(year):"")+"/sublanguageid-"+encodeURIComponent(lang);
+  return fetch(url,{headers:{"Accept":"application/json"}}).then(function(r){
+    if(!r.ok) throw new Error("OpenSubtitles respondió "+r.status);
+    return r.json();
+  }).then(function(data){
+    var list = Array.isArray(data)?data:[];
+    list.sort(function(a,b){ return (parseInt(b.SubDownloadsCnt,10)||0)-(parseInt(a.SubDownloadsCnt,10)||0); });
+    renderSubResults(list);
+    if(list.length){
+      $("subStatus").innerHTML = "Se encontraron <b style='color:#fff'>"+list.length+"</b> subtítulos. Aplicando el más descargado…";
+      downloadAndApplySub(list[0]);
+    } else {
+      $("subStatus").textContent = "No se encontraron subtítulos en "+langName+" para ese título y año. Probá quitando el año o cambiando el idioma.";
+    }
+    return list;
+  }).catch(function(e){
+    $("subStatus").innerHTML = "La búsqueda automática no pudo conectarse con OpenSubtitles ("+esc(e.message)+"). Revisá tu conexión y tocá «Solo buscar subtítulos» para reintentar. Si sigue fallando, podés cargar un .srt con el respaldo de abajo.";
+    renderSubResults([]);
+    return [];
+  });
+}
+function stopMagnetPlayback(){
+  if(wtProgressTimer){ clearInterval(wtProgressTimer); wtProgressTimer=null; }
+  if(wtTorrent){ try{ wtTorrent.destroy(); }catch(e){} wtTorrent=null; }
+  var v = $("magnetVideo"); if(v){ try{v.pause();}catch(e){} v.removeAttribute("src"); v.classList.add("hidden"); }
+  $("magnetVideoEmpty").classList.remove("hidden");
+  $("magnetProgressWrap").classList.add("hidden");
+  $("magnetInfo").textContent = "Reproducción detenida.";
+}
+function playMagnetSource(source){
+  if(typeof WebTorrent==="undefined"){
+    magnetStatus("info","Cargando la librería de streaming (WebTorrent)…");
+    ensureWebTorrent().then(function(ok){
+      if(!ok){ magnetStatus("err","No se pudo cargar la librería de streaming (WebTorrent) desde ningún servidor. Revisá tu conexión y recargá la página."); return; }
+      playMagnetSource(source);
+    });
+    return;
+  }
+  stopMagnetPlayback();
+  if(!wtClient){ try{ wtClient = new WebTorrent(); }catch(e){ magnetStatus("err","Tu navegador no pudo iniciar WebTorrent: "+esc(e.message)); return; } }
+  magnetStatus("info","Conectando con los pares… Esto puede tardar unos segundos según cuántos estén compartiendo.");
+  $("magnetTitle").textContent = "Conectando…";
+  var onTorrent = function(torrent){
+    wtTorrent = torrent;
+    var names = torrent.files.map(function(f){ return f.name; }).join(", ");
+    var g = fillGuessFromText(torrent.name||names);
+    $("magnetTitle").textContent = torrent.name||g.title||"Reproduciendo magnet";
+    // Elegir el video más grande reproducible
+    var videoFile = null;
+    torrent.files.forEach(function(f){ if(/\.(mp4|webm|mov|m4v)$/i.test(f.name) && (!videoFile || f.length>videoFile.length)) videoFile=f; });
+    if(!videoFile){ torrent.files.forEach(function(f){ if(/\.(mkv|avi)$/i.test(f.name) && (!videoFile || f.length>videoFile.length)) videoFile=f; }); }
+    if(!videoFile && torrent.files.length) videoFile = torrent.files.slice().sort(function(a,b){return b.length-a.length;})[0];
+    var video = $("magnetVideo");
+    $("magnetVideoEmpty").classList.add("hidden"); video.classList.remove("hidden");
+    $("magnetProgressWrap").classList.remove("hidden");
+    if(videoFile){
+      $("magnetInfo").textContent = "Archivo: "+videoFile.name+( /\.(mkv|avi)$/i.test(videoFile.name) ? " — ojo: MKV/AVI a veces no se reproduce en el navegador; si no se ve, buscá una versión MP4." : "");
+      try{ videoFile.renderTo(video, {autoplay:true}); }catch(e){ try{ videoFile.appendTo($("magnetVideoWrap")); }catch(e2){} }
+    }
+    // Buscar subtítulos automáticamente al tener metadatos
+    searchSubtitlesAuto();
+    wtProgressTimer = setInterval(function(){
+      if(!wtTorrent) return;
+      var pct = Math.round((wtTorrent.progress||0)*100);
+      $("magnetProgressBar").style.width = pct+"%";
+      var speed = wtTorrent.downloadSpeed ? Math.round(wtTorrent.downloadSpeed/1024)+" KB/s" : "0 KB/s";
+      magnetStatus("info","Descargando por streaming: <b>"+pct+"%</b> · Pares: <b>"+wtTorrent.numPeers+"</b> · Velocidad: <b>"+speed+"</b>"+(wtTorrent.done?" · Completo":""));
+      if(wtTorrent.done && wtProgressTimer){ /* sigue mostrando completo */ }
+    },1000);
+  };
+  var onError = function(err){ magnetStatus("err","No se pudo reproducir ese magnet: "+esc((err&&err.message)||err||"error")+". Revisá que el enlace esté completo y que tenga pares compartiendo."); };
+  try{
+    if(typeof source==="string") wtClient.add(source, onTorrent);
+    else wtClient.add(source, onTorrent); // File .torrent
+    wtClient.removeAllListeners && wtClient.removeAllListeners("error");
+    wtClient.on("error", onError);
+  }catch(e){ onError(e); }
+}
+
+/* ================= Vistas y eventos ================= */
+function showView(which){
+  var isAdmin = which==="admin";
+  var isMagnet = which==="magnet";
+  $("viewAdmin").classList.toggle("hidden", !isAdmin);
+  $("viewMagnet").classList.toggle("hidden", !isMagnet);
+  $("viewCatalogo").classList.toggle("hidden", isAdmin||isMagnet);
+  $("navAdmin").classList.toggle("active", isAdmin);
+  $("navMagnet").classList.toggle("active", isMagnet);
+  $("navCatalogo").classList.toggle("active", !isAdmin && !isMagnet);
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+document.addEventListener("DOMContentLoaded", function(){
+  loadCatalog();
+
+  $("heroPrev").addEventListener("click", function(){ goToHero(heroIndex - 1, -1); restartHeroTimer(); });
+  $("heroNext").addEventListener("click", function(){ goToHero(heroIndex + 1, 1); restartHeroTimer(); });
+  $("heroSection").addEventListener("mouseenter", function(){ heroHoverPause = true; });
+  $("heroSection").addEventListener("mouseleave", function(){ heroHoverPause = false; });
+  $("heroSection").addEventListener("focusin", function(){ heroHoverPause = true; });
+  $("heroSection").addEventListener("focusout", function(){ heroHoverPause = false; });
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) restartHeroTimer(); });
+
+  $("navCatalogo").addEventListener("click", function(){ showView("catalogo"); });
+  $("navMagnet").addEventListener("click", function(){ showView("magnet"); });
+  $("navAdmin").addEventListener("click", function(){ showView("admin"); });
+
+  // --- Magnet / Torrent ---
+  $("magnetInput").addEventListener("input", function(){ guessFromAnySourceText(this.value); });
+  $("magnetInput").addEventListener("paste", function(){ setTimeout(function(){ guessFromAnySourceText($("magnetInput").value); }, 30); });
+  $("btnPasteMagnet").addEventListener("click", function(){
+    if(navigator.clipboard && navigator.clipboard.readText){ navigator.clipboard.readText().then(function(t){ if(t){ $("magnetInput").value=t.trim(); guessFromAnySourceText(t); magnetStatus("info","Enlace pegado. El título para los subtítulos se completó solo si se pudo detectar. Tocá «Reproducir y buscar subtítulos»."); } }).catch(function(){ magnetStatus("err","El navegador no dejó leer el portapapeles. Pegá el enlace con Ctrl+V en el campo."); }); }
+    else magnetStatus("err","Pegá el enlace con Ctrl+V en el campo.");
+  });
+  $("btnPlayMagnet").addEventListener("click", function(){
+    var file = $("torrentFile").files && $("torrentFile").files[0];
+    var link = $("magnetInput").value.trim();
+    if(file){ fillGuessFromText(file.name.replace(/\.torrent$/i,"")); playMagnetSource(file); return; }
+    if(!link){ magnetStatus("err","Pegá un enlace magnet, un enlace a un archivo .torrent, o cargá un archivo .torrent desde tu equipo."); return; }
+    if(isMagnetLink(link)){ var dn = parseMagnetName(link); if(dn) fillGuessFromText(dn); playMagnetSource(link); return; }
+    if(isTorrentUrl(link)){ playTorrentUrl(link); return; }
+    if(isHttpLink(link)){
+      // Enlace http sin .torrent visible: intentarlo igual como .torrent
+      magnetStatus("info","Ese enlace no termina en .torrent, pero se va a intentar abrir como archivo torrent.");
+      playTorrentUrl(link); return;
+    }
+    magnetStatus("err","Ese texto no parece un enlace válido. Tiene que empezar con magnet:?xt=urn:btih:… o con https:// y apuntar a un archivo .torrent.");
+  });
+  $("btnSearchSubsOnly").addEventListener("click", function(){ searchSubtitlesAuto(); });
+  $("btnStopMagnet").addEventListener("click", function(){ stopMagnetPlayback(); magnetStatus("info","Reproducción detenida."); });
+  $("torrentFile").addEventListener("change", function(){ if(this.files && this.files[0]) fillGuessFromText(this.files[0].name.replace(/\.torrent$/i,"")); });
+  $("srtFile").addEventListener("change", function(){
+    var f = this.files && this.files[0]; if(!f) return;
+    f.text().then(function(t){ applySubtitleText(t, f.name); }).catch(function(){ $("subStatus").textContent="No se pudo leer ese archivo de subtítulos."; });
+  });
+  $("searchInput").addEventListener("input", function(){ if($("viewCatalogo").classList.contains("hidden")) showView("catalogo"); renderGrid(); });
+  $("sortSelect").addEventListener("change", renderGrid);
+  $("favFilter").addEventListener("click", function(){
+    onlyFavs = !onlyFavs;
+    this.classList.toggle("active", onlyFavs);
+    if(onlyFavs){ activeGenre="Favoritos"; } else if(activeGenre==="Favoritos"){ activeGenre="Todas"; }
+    renderChips(); renderGrid();
+  });
+
+  $("closePlayer").addEventListener("click", closePlayer);
+  $("playerModal").addEventListener("click", function(e){ if(e.target===this) closePlayer(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") closePlayer(); });
+  $("modalFav").addEventListener("click", function(){ if(currentModalId) toggleFav(currentModalId); });
+
+  $("fEmbed").addEventListener("input", updateEmbedPreview);
+  $("cancelEdit").addEventListener("click", function(){ resetForm(); clearStatus($("formStatus")); });
+
+  $("movieForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var title = $("fTitle").value.trim();
+    var year = parseInt($("fYear").value,10);
+    var src = extractEmbedSrc($("fEmbed").value);
+    if(!title || !year){ setStatus($("formStatus"),"err","Completá el título y el año."); return; }
+    if(!src){ setStatus($("formStatus"),"err","No se encontró la dirección del reproductor en el código pegado. Pegá el iframe completo de Byse, por ejemplo: &lt;iframe src=\"https://bysetayico.com/e/…\"&gt;"); return; }
+    var data = { title:title, year:year, genre:$("fGenre").value, poster:$("fPoster").value.trim(),
+                 desc:$("fDesc").value.trim(), embed:$("fEmbed").value.trim(), featured:$("fFeatured").value==="si" };
+    // Puede haber varias destacadas: rotan en la portada, 3 segundos cada una.
+    if(editingId){
+      var m = findMovie(editingId);
+      if(m){ for(var k in data) m[k]=data[k]; delete m.example; }
+      setStatus($("formStatus"),"ok","✔ Película actualizada en el catálogo. Para publicarla, pegá tu token y tocá «Guardar en GitHub».");
+    } else {
+      data.id = "peli-" + Date.now();
+      catalog.push(data);
+      setStatus($("formStatus"),"ok","✔ «"+esc(title)+"» se agregó al catálogo. Para publicarla, pegá tu token y tocá «Guardar en GitHub».");
+    }
+    resetForm(); afterCatalogChange();
+  });
+
+  // Token: solo vive en esta variable de memoria
+  $("ghToken").addEventListener("input", function(){ githubToken = this.value.trim(); });
+  $("btnGithubSave").addEventListener("click", saveToGithub);
+});
+</script>
+</body>
+</html>
