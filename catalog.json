@@ -88,5 +88,25 @@
     "embed": "<iframe src=\"https://bysetayico.com/e/4pzgkfusy4li\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
     "featured": true,
     "id": "peli-1794078160678"
+  },
+  {
+    "id": "ej-9",
+    "title": "El incidente",
+    "year": 2014,
+    "genre": "Ciencia ficción",
+    "poster": "https://image.tmdb.org/t/p/w500/idb1ACZCQAsYJCFMfs9vgyBIbP1.jpg",
+    "featured": false,
+    "desc": "Dos historias paralelas sobre personajes atrapados en espacios ilógicamente infinitos: dos hermanos y un detective atrapados en unas escaleras infinitas, y una familia atrapada en una carretera infinita... durante 35 años.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/pc57cft5j9k1\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>"
+  },
+  {
+    "id": "ej-10",
+    "title": "La invitación",
+    "year": 2026,
+    "genre": "Comedia",
+    "poster": "https://image.tmdb.org/t/p/w500/hFLVVF6GSfFkvDlht6iCsCcFjrh.jpg",
+    "featured": false,
+    "desc": "Joe y Ángela, un matrimonio en crisis, invitan a cenar a sus vecinos de arriba, Pina y Hawk. La velada se convierte en una noche de confesiones, celos y deseos reprimidos que pone en jaque su relación.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/zn0vgxv2tbuh\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>"
   }
 ]
