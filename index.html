@@ -127,6 +127,7 @@
   .modal-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
   .ep-list{ display:flex; flex-direction:column; gap:8px; margin-top:18px; }
   .ep-list h3{ font-family:var(--serif); font-size:18px; font-weight:600; }
+  .ep-list h4.ep-season{ font-family:var(--serif); font-size:15px; font-weight:600; color:var(--muted); margin:12px 0 2px; }
   .ep-item{ display:flex; gap:12px; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; cursor:pointer; text-align:left; width:100%; color:#e3e3e6; font-family:inherit; }
   .ep-item.active{ border-color:#ececec; }
   .ep-item img{ width:96px; height:54px; object-fit:cover; border-radius:4px; flex:none; background:#000; display:block; }
@@ -789,7 +790,9 @@ function renderEpList(m){
   if(!m.episodes || !m.episodes.length){ box.innerHTML = ""; return; }
   var isCol = !!m.collection;
   var html = isCol ? "<h3>Películas (" + m.episodes.length + ")</h3>" : "<h3>Capítulos (" + m.episodes.length + ")</h3>";
+  var lastSeason = 0;
   m.episodes.forEach(function(ep, i){
+    if(!isCol && ep.season && ep.season !== lastSeason){ html += '<h4 class="ep-season">Temporada ' + ep.season + '</h4>'; lastSeason = ep.season; }
     html += '<button class="ep-item' + (isCol?" ep-portrait":"") + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
       + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + esc(m.poster||"") + '\';">'
       + '<span class="ep-t"><strong>' + (isCol ? esc(ep.title) : 'Cap. ' + ep.n + " — " + esc(ep.title)) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
@@ -805,13 +808,22 @@ function playEpisode(m, idx){
   var ep = m.episodes[idx];
   var src = extractEmbedSrc(ep.embed);
   var isCol = !!m.collection;
+  var epLabel = isCol ? ep.title : ((ep.season ? "T" + ep.season + " · Cap. " + ep.n : "Cap. " + ep.n) + ": " + ep.title);
   $("playerWrap").innerHTML = src
-    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+(isCol ? ' — ' + esc(ep.title) : ' — Cap. '+ep.n)+'"></iframe>'
+    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+' — '+esc(epLabel)+'"></iframe>'
     : '<div class="player-empty"><strong>' + (isCol ? 'Esta película todavía no tiene reproductor' : 'Este capítulo todavía no tiene reproductor') + '</strong></div>';
-  $("modalTitle").textContent = isCol ? m.title + " — " + ep.title : m.title + " — Cap. " + ep.n + ": " + ep.title;
-  $("modalMeta").innerHTML = isCol
-    ? '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span>'
-    : '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>Capítulo '+ep.n+' de '+m.episodes.length+'</span>';
+  $("modalTitle").textContent = m.title + " — " + epLabel;
+  var metaHtml = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span>';
+  if(!isCol){
+    if(ep.season){
+      var seasonCount = 0;
+      for(var j=0;j<m.episodes.length;j++) if(m.episodes[j].season===ep.season) seasonCount++;
+      metaHtml += '<span>Temporada '+ep.season+' · Capítulo '+ep.n+' de '+seasonCount+'</span>';
+    } else {
+      metaHtml += '<span>Capítulo '+ep.n+' de '+m.episodes.length+'</span>';
+    }
+  }
+  $("modalMeta").innerHTML = metaHtml;
   $("modalDesc").textContent = m.desc || "Sin descripción.";
   renderEpList(m);
 }
@@ -823,7 +835,10 @@ function openPlayer(id){
   lastPlayedId = id; renderContinue();
   if(m.episodes && m.episodes.length){
     $("modalTitle").textContent = m.title;
-    $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>' + (m.collection ? 'Colección · ' + m.episodes.length + ' películas' : 'Serial · ' + m.episodes.length + ' capítulos') + '</span>';
+    var seasons = 0, seenSeasons = {};
+    m.episodes.forEach(function(ep){ if(ep.season && !seenSeasons[ep.season]){ seenSeasons[ep.season]=1; seasons++; } });
+    var serialMeta = seasons > 1 ? 'Serial · ' + seasons + ' temporadas · ' + m.episodes.length + ' capítulos' : 'Serial · ' + m.episodes.length + ' capítulos';
+    $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>' + (m.collection ? 'Colección · ' + m.episodes.length + ' películas' : serialMeta) + '</span>';
     $("modalDesc").textContent = m.desc || "Sin descripción.";
     syncModalFav();
     $("modalEdit").onclick = function(){ closePlayer(); showView("admin"); startEdit(id); };
