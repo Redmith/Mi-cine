@@ -125,6 +125,14 @@
   .modal-meta{ color:var(--muted); font-weight:500; font-size:13.5px; margin:8px 0 10px; display:flex; gap:10px; flex-wrap:wrap; }
   .modal-desc{ color:#c9c9cd; line-height:1.65; font-size:15px; }
   .modal-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
+  .ep-list{ display:flex; flex-direction:column; gap:8px; margin-top:18px; }
+  .ep-list h3{ font-family:var(--serif); font-size:18px; font-weight:600; }
+  .ep-item{ display:flex; gap:12px; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; cursor:pointer; text-align:left; width:100%; color:#e3e3e6; font-family:inherit; }
+  .ep-item.active{ border-color:#ececec; }
+  .ep-item img{ width:96px; height:54px; object-fit:cover; border-radius:4px; flex:none; background:#000; display:block; }
+  .ep-item .ep-t{ flex:1; min-width:0; }
+  .ep-item .ep-t strong{ display:block; font-size:14px; font-weight:600; }
+  .ep-item .ep-t span{ font-size:12.5px; color:var(--muted); }
   .modal-close-row{ display:flex; justify-content:flex-end; padding:10px 12px 0; }
   .icon-btn{ background:transparent; border:1px solid var(--line); color:#fff; width:36px; height:36px; border-radius:var(--radius-sm); font-size:16px; line-height:1; }
 
@@ -428,6 +436,7 @@
       <h2 id="modalTitle">—</h2>
       <div class="modal-meta" id="modalMeta"></div>
       <p class="modal-desc" id="modalDesc"></p>
+      <div id="epList" class="ep-list"></div>
       <div class="modal-actions">
         <button class="btn btn-ghost btn-sm" id="modalFav" type="button">☆ Marcar favorito</button>
         <button class="btn btn-dark btn-sm" id="modalEdit" type="button">Editar en Administrar</button>
@@ -524,6 +533,7 @@ var onlyFavs = false;
 var editingId = null;
 var pendingDeleteId = null;
 var currentModalId = null;
+var currentEpisode = 0;
 var githubToken = "";     // NUNCA se guarda fuera de esta variable
 
 function $(id){ return document.getElementById(id); }
@@ -772,10 +782,51 @@ function renderContinue(){
 }
 /* ================= Reproductor ================= */
 function findMovie(id){ for(var i=0;i<catalog.length;i++) if(catalog[i].id===id) return catalog[i]; return null; }
+function fmtMin(sec){ var m = Math.round((sec||0)/60); return m + " min"; }
+function renderEpList(m){
+  var box = $("epList"); if(!box) return;
+  if(!m.episodes || !m.episodes.length){ box.innerHTML = ""; return; }
+  var html = "<h3>Capítulos (" + m.episodes.length + ")</h3>";
+  m.episodes.forEach(function(ep, i){
+    html += '<button class="ep-item' + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
+      + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy">'
+      + '<span class="ep-t"><strong>Cap. ' + ep.n + " — " + esc(ep.title) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
+      + '</button>';
+  });
+  box.innerHTML = html;
+  var items = box.querySelectorAll("[data-ep]");
+  for(var i=0;i<items.length;i++) items[i].addEventListener("click", function(){ playEpisode(m, parseInt(this.getAttribute("data-ep"),10)); });
+}
+function playEpisode(m, idx){
+  if(!m.episodes || !m.episodes[idx]) return;
+  currentEpisode = idx;
+  var ep = m.episodes[idx];
+  var src = extractEmbedSrc(ep.embed);
+  $("playerWrap").innerHTML = src
+    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+' — Cap. '+ep.n+'"></iframe>'
+    : '<div class="player-empty"><strong>Este capítulo todavía no tiene reproductor</strong></div>';
+  $("modalTitle").textContent = m.title + " — Cap. " + ep.n + ": " + ep.title;
+  $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>Capítulo '+ep.n+' de '+m.episodes.length+'</span>';
+  $("modalDesc").textContent = m.desc || "Sin descripción.";
+  renderEpList(m);
+}
 function openPlayer(id){
   var m = findMovie(id); if(!m) return;
   currentModalId = id;
+  currentEpisode = 0;
+  var epBox = $("epList"); if(epBox) epBox.innerHTML = "";
   lastPlayedId = id; renderContinue();
+  if(m.episodes && m.episodes.length){
+    $("modalTitle").textContent = m.title;
+    $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>Serial · 12 capítulos</span>';
+    $("modalDesc").textContent = m.desc || "Sin descripción.";
+    syncModalFav();
+    $("modalEdit").onclick = function(){ closePlayer(); showView("admin"); startEdit(id); };
+    $("playerModal").classList.add("open");
+    document.body.style.overflow = "hidden";
+    playEpisode(m, 0);
+    return;
+  }
   var src = extractEmbedSrc(m.embed);
   $("playerWrap").innerHTML = src
     ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+'"></iframe>'
@@ -795,8 +846,10 @@ function syncModalFav(){
 function closePlayer(){
   $("playerModal").classList.remove("open");
   $("playerWrap").innerHTML = ""; // corta la reproducción al cerrar
+  var box = $("epList"); if(box) box.innerHTML = "";
   document.body.style.overflow = "";
   currentModalId = null;
+  currentEpisode = 0;
 }
 
 /* ================= Administrar: alta / edición / baja ================= */

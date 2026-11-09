@@ -1,1 +1,159 @@
-[{"desc":"Cuatro socios resuelven los problemas de sus clientes con operativos de simulación: engaños planificados al detalle para que cada cliente salga beneficiado y el responsable, neutralizado.","embed":"<iframe src=\"https://bysetayico.com/e/4pzgkfusy4li\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>","featured":true,"genre":"Otro","id":"peli-1794078160678","poster":"https://image.tmdb.org/t/p/w500/9LFNewnTzahEuZ4YKxEZoMmDeqO.jpg","title":"Los simuladores","year":2000},{"desc":"Dos historias paralelas sobre personajes atrapados en espacios ilógicamente infinitos: dos hermanos y un detective atrapados en unas escaleras infinitas, y una familia atrapada en una carretera infinita... durante 35 años.","embed":"<iframe src=\"https://bysesayeveum.com/e/pc57cft5j9k1\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>","featured":false,"genre":"Ciencia ficción","id":"ej-9","poster":"https://image.tmdb.org/t/p/w500/idb1ACZCQAsYJCFMfs9vgyBIbP1.jpg","title":"El incidente","year":2014},{"desc":"Joe y Ángela, un matrimonio en crisis, invitan a cenar a sus vecinos de arriba, Pina y Hawk. La velada se convierte en una noche de confesiones, celos y deseos reprimidos que pone en jaque su relación.","embed":"<iframe src=\"https://bysesayeveum.com/e/zn0vgxv2tbuh\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>","featured":false,"genre":"Comedia","id":"ej-10","poster":"https://image.tmdb.org/t/p/w500/hFLVVF6GSfFkvDlht6iCsCcFjrh.jpg","title":"La invitación","year":2026},{"desc":"Tito, de 13 años, es superdotado para el fútbol. Su genialidad le logra un contrato que lo saca a él y a su familia de la pobreza, pero se vuelve un jugador mezquino, deja la escuela y no tiene amigos. Cuando está a un paso de consagrarse, algo inesperado rompe su sueño y lo obliga a volver a su pueblo.","embed":"<iframe src=\"https://bysesayeveum.com/e/tm32xkrp0za4\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>","featured":false,"genre":"Drama","id":"ej-11","poster":"https://image.tmdb.org/t/p/w500/kuHlEiRVQHLXR91gFpVEEgR9SOf.jpg","title":"Mi mundial","year":2017},{"desc":"Un virus desata una masacre en Montevideo: los infectados se convierten en cazadores que solo calman su fiebre matando. Iris y su hija quedan atrapadas en el club deportivo donde Iris trabaja como guardia. Su única oportunidad surge cuando descubren que, tras cada ataque, los infectados entran en un breve estado de calma de exactamente 32 segundos.","embed":"<iframe src=\"https://bysesayeveum.com/e/8acm4i4gym07\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>","featured":false,"genre":"Terror","id":"ej-12","poster":"https://image.tmdb.org/t/p/w500/wjV7Cf46oiWtz9eVN07dhiwkv8i.jpg","title":"Virus 32","year":2022},{"desc":"Kotoko, una madre soltera que sufre de visión doble, intenta cuidar a su bebé en medio de alucinaciones aterradoras. Tras una crisis, le quitan a su hijo; su único respiro es cantar, hasta que un novelista la escucha y empiezan una relación volátil.","embed":"<iframe src=\"https://bysesayeveum.com/e/fvdk1llrg24t\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>","featured":false,"genre":"Drama","id":"ej-13","poster":"https://image.tmdb.org/t/p/w500/gR53iaNHHbIGE6nS4np2t5IFkdO.jpg","title":"Kotoko","year":2011}]
+[
+  {
+    "desc": "Cuatro socios resuelven los problemas de sus clientes con operativos de simulación: engaños planificados al detalle para que cada cliente salga beneficiado y el responsable, neutralizado.",
+    "embed": "<iframe src=\"https://bysetayico.com/e/4pzgkfusy4li\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": true,
+    "genre": "Otro",
+    "id": "peli-1794078160678",
+    "poster": "https://image.tmdb.org/t/p/w500/9LFNewnTzahEuZ4YKxEZoMmDeqO.jpg",
+    "title": "Los simuladores",
+    "year": 2000
+  },
+  {
+    "desc": "Dos historias paralelas sobre personajes atrapados en espacios ilógicamente infinitos: dos hermanos y un detective atrapados en unas escaleras infinitas, y una familia atrapada en una carretera infinita... durante 35 años.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/pc57cft5j9k1\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": false,
+    "genre": "Ciencia ficción",
+    "id": "ej-9",
+    "poster": "https://image.tmdb.org/t/p/w500/idb1ACZCQAsYJCFMfs9vgyBIbP1.jpg",
+    "title": "El incidente",
+    "year": 2014
+  },
+  {
+    "desc": "Joe y Ángela, un matrimonio en crisis, invitan a cenar a sus vecinos de arriba, Pina y Hawk. La velada se convierte en una noche de confesiones, celos y deseos reprimidos que pone en jaque su relación.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/zn0vgxv2tbuh\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": false,
+    "genre": "Comedia",
+    "id": "ej-10",
+    "poster": "https://image.tmdb.org/t/p/w500/hFLVVF6GSfFkvDlht6iCsCcFjrh.jpg",
+    "title": "La invitación",
+    "year": 2026
+  },
+  {
+    "desc": "Tito, de 13 años, es superdotado para el fútbol. Su genialidad le logra un contrato que lo saca a él y a su familia de la pobreza, pero se vuelve un jugador mezquino, deja la escuela y no tiene amigos. Cuando está a un paso de consagrarse, algo inesperado rompe su sueño y lo obliga a volver a su pueblo.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/tm32xkrp0za4\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": false,
+    "genre": "Drama",
+    "id": "ej-11",
+    "poster": "https://image.tmdb.org/t/p/w500/kuHlEiRVQHLXR91gFpVEEgR9SOf.jpg",
+    "title": "Mi mundial",
+    "year": 2017
+  },
+  {
+    "desc": "Un virus desata una masacre en Montevideo: los infectados se convierten en cazadores que solo calman su fiebre matando. Iris y su hija quedan atrapadas en el club deportivo donde Iris trabaja como guardia. Su única oportunidad surge cuando descubren que, tras cada ataque, los infectados entran en un breve estado de calma de exactamente 32 segundos.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/8acm4i4gym07\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": false,
+    "genre": "Terror",
+    "id": "ej-12",
+    "poster": "https://image.tmdb.org/t/p/w500/wjV7Cf46oiWtz9eVN07dhiwkv8i.jpg",
+    "title": "Virus 32",
+    "year": 2022
+  },
+  {
+    "desc": "Kotoko, una madre soltera que sufre de visión doble, intenta cuidar a su bebé en medio de alucinaciones aterradoras. Tras una crisis, le quitan a su hijo; su único respiro es cantar, hasta que un novelista la escucha y empiezan una relación volátil.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/fvdk1llrg24t\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "featured": false,
+    "genre": "Drama",
+    "id": "ej-13",
+    "poster": "https://image.tmdb.org/t/p/w500/gR53iaNHHbIGE6nS4np2t5IFkdO.jpg",
+    "title": "Kotoko",
+    "year": 2011
+  },
+  {
+    "id": "zorro-fighting-legion",
+    "title": "Zorro's Fighting Legion",
+    "year": 1939,
+    "genre": "Western",
+    "poster": "https://image.tmdb.org/t/p/w500/nu0g0KN5B1l7NSol9TwRWUbNGBc.jpg",
+    "featured": false,
+    "type": "series",
+    "desc": "Serial de Republic Pictures de 1939 con Reed Hadley como Don Diego Vega / el Zorro. En 1824, Don Del Oro planea convertirse en emperador de México y el Zorro organiza a su legión para detenerlo. 12 capítulos, 211 minutos en total.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/keieflwcs7v6\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "episodes": [
+      {
+        "n": 1,
+        "title": "The Golden God",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/keieflwcs7v6\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/keieflwcs7v6_t.jpg",
+        "length": 1643
+      },
+      {
+        "n": 2,
+        "title": "The Flaming Z",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/olugmyumumr5\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/olugmyumumr5_t.jpg",
+        "length": 999
+      },
+      {
+        "n": 3,
+        "title": "Descending Doom",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/zg2yk1qodj53\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/zg2yk1qodj53_t.jpg",
+        "length": 1002
+      },
+      {
+        "n": 4,
+        "title": "The Bridge of Peril",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/zmo1uq9draip\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/zmo1uq9draip_t.jpg",
+        "length": 1003
+      },
+      {
+        "n": 5,
+        "title": "The Decoy",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/e7wprlcy6vek\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/e7wprlcy6vek_t.jpg",
+        "length": 1000
+      },
+      {
+        "n": 6,
+        "title": "Zorro to the Rescue",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/i1ct7h87fvg4\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/i1ct7h87fvg4_t.jpg",
+        "length": 998
+      },
+      {
+        "n": 7,
+        "title": "The Fugitive",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/mgnjwcam056k\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/mgnjwcam056k_t.jpg",
+        "length": 984
+      },
+      {
+        "n": 8,
+        "title": "Flowing Death",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/3sdnn19b4zf3\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/3sdnn19b4zf3_t.jpg",
+        "length": 984
+      },
+      {
+        "n": 9,
+        "title": "The Golden Arrow",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/xfiuc1cn7y08\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/xfiuc1cn7y08_t.jpg",
+        "length": 997
+      },
+      {
+        "n": 10,
+        "title": "Mystery Wagon",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/e3gq617tpg5f\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/e3gq617tpg5f_t.jpg",
+        "length": 999
+      },
+      {
+        "n": 11,
+        "title": "Face to Face",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/rocpxef4so7k\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/rocpxef4so7k_t.jpg",
+        "length": 981
+      },
+      {
+        "n": 12,
+        "title": "Unmasked",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/7abo65mavbrt\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://videothumbs.me/7abo65mavbrt_t.jpg",
+        "length": 996
+      }
+    ]
+  }
+]
