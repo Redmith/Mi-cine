@@ -789,7 +789,7 @@ function renderEpList(m){
   var html = "<h3>Capítulos (" + m.episodes.length + ")</h3>";
   m.episodes.forEach(function(ep, i){
     html += '<button class="ep-item' + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
-      + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy">'
+      + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + esc(m.poster||"") + '\';">'
       + '<span class="ep-t"><strong>Cap. ' + ep.n + " — " + esc(ep.title) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
       + '</button>';
   });
