@@ -130,6 +130,7 @@
   .ep-item{ display:flex; gap:12px; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:6px; padding:8px 10px; cursor:pointer; text-align:left; width:100%; color:#e3e3e6; font-family:inherit; }
   .ep-item.active{ border-color:#ececec; }
   .ep-item img{ width:96px; height:54px; object-fit:cover; border-radius:4px; flex:none; background:#000; display:block; }
+ .ep-item.ep-portrait img{ width:54px; height:81px; }
   .ep-item .ep-t{ flex:1; min-width:0; }
   .ep-item .ep-t strong{ display:block; font-size:14px; font-weight:600; }
   .ep-item .ep-t span{ font-size:12.5px; color:var(--muted); }
@@ -786,11 +787,12 @@ function fmtMin(sec){ var m = Math.round((sec||0)/60); return m + " min"; }
 function renderEpList(m){
   var box = $("epList"); if(!box) return;
   if(!m.episodes || !m.episodes.length){ box.innerHTML = ""; return; }
-  var html = "<h3>Capítulos (" + m.episodes.length + ")</h3>";
+  var isCol = !!m.collection;
+  var html = isCol ? "<h3>Películas (" + m.episodes.length + ")</h3>" : "<h3>Capítulos (" + m.episodes.length + ")</h3>";
   m.episodes.forEach(function(ep, i){
-    html += '<button class="ep-item' + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
+    html += '<button class="ep-item' + (isCol?" ep-portrait":"") + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
       + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + esc(m.poster||"") + '\';">'
-      + '<span class="ep-t"><strong>Cap. ' + ep.n + " — " + esc(ep.title) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
+      + '<span class="ep-t"><strong>' + (isCol ? esc(ep.title) : 'Cap. ' + ep.n + " — " + esc(ep.title)) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
       + '</button>';
   });
   box.innerHTML = html;
@@ -802,11 +804,14 @@ function playEpisode(m, idx){
   currentEpisode = idx;
   var ep = m.episodes[idx];
   var src = extractEmbedSrc(ep.embed);
+  var isCol = !!m.collection;
   $("playerWrap").innerHTML = src
-    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+' — Cap. '+ep.n+'"></iframe>'
-    : '<div class="player-empty"><strong>Este capítulo todavía no tiene reproductor</strong></div>';
-  $("modalTitle").textContent = m.title + " — Cap. " + ep.n + ": " + ep.title;
-  $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>Capítulo '+ep.n+' de '+m.episodes.length+'</span>';
+    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+(isCol ? ' — ' + esc(ep.title) : ' — Cap. '+ep.n)+'"></iframe>'
+    : '<div class="player-empty"><strong>' + (isCol ? 'Esta película todavía no tiene reproductor' : 'Este capítulo todavía no tiene reproductor') + '</strong></div>';
+  $("modalTitle").textContent = isCol ? m.title + " — " + ep.title : m.title + " — Cap. " + ep.n + ": " + ep.title;
+  $("modalMeta").innerHTML = isCol
+    ? '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span>'
+    : '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>Capítulo '+ep.n+' de '+m.episodes.length+'</span>';
   $("modalDesc").textContent = m.desc || "Sin descripción.";
   renderEpList(m);
 }
@@ -818,7 +823,7 @@ function openPlayer(id){
   lastPlayedId = id; renderContinue();
   if(m.episodes && m.episodes.length){
     $("modalTitle").textContent = m.title;
-    $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>Serial · 12 capítulos</span>';
+    $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span><span>' + (m.collection ? 'Colección · ' + m.episodes.length + ' películas' : 'Serial · ' + m.episodes.length + ' capítulos') + '</span>';
     $("modalDesc").textContent = m.desc || "Sin descripción.";
     syncModalFav();
     $("modalEdit").onclick = function(){ closePlayer(); showView("admin"); startEdit(id); };
