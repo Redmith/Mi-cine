@@ -155,5 +155,74 @@
         "length": 996
       }
     ]
+  },
+  {
+    "id": "jorge-polaco",
+    "title": "Jorge Polaco",
+    "year": 1986,
+    "genre": "Drama",
+    "poster": "https://image.tmdb.org/t/p/w500/mgUehPbAkMjtd3FyplIRbiYJC0Y.jpg",
+    "featured": false,
+    "type": "series",
+    "desc": "Todas las películas de Jorge Polaco (1946–2014), el director maldito del cine argentino: de Diapasón (1986) a Príncipe azul (2013), más el documental Jorge Polaco (2024) de María Onis. 8 películas.",
+    "embed": "<iframe src=\"https://ok.ru/videoembed/8128850103026\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "episodes": [
+      {
+        "n": 1,
+        "title": "Diapasón (1986)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/8128850103026\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://images.mubicdn.net/images/film/160328/cache-176959-1745493325/image-w1280.jpg?size=800x",
+        "length": 5478
+      },
+      {
+        "n": 2,
+        "title": "En el nombre del hijo (1987)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/8128868715250\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://www.comparandonos.com/plds/tv/caratulas/peliculas/154/en-el-nombre-del-hijo.webp",
+        "length": 5133
+      },
+      {
+        "n": 3,
+        "title": "Kindergarten (1989)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/8128920750834\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://www.ofdb.de/images/poster/317/317758.jpg?v=1521315034",
+        "length": 4714
+      },
+      {
+        "n": 4,
+        "title": "La dama regresa (1996)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/8129138264818\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/cP2hDMm2doViZIuUh8NAPqdMbyE.jpg",
+        "length": 5918
+      },
+      {
+        "n": 5,
+        "title": "Viaje por el cuerpo (2000)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/8129270057714\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/p8OC4XQi4AAZmUQU8uIwn0xq1ni.jpg",
+        "length": 4805
+      },
+      {
+        "n": 6,
+        "title": "Arroz con leche (2009)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/5159829899780\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://media.movieassets.com/static/images/items/movies/posters/250/85/arroz-con-leche-626a6bd96740721d1bef8c945ad6a33d.jpg",
+        "length": 3899
+      },
+      {
+        "n": 7,
+        "title": "Príncipe azul (2013)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/9569929595634\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/d5GlMK4tiMiN2Grj3Q57rLnVRkp.jpg",
+        "length": 3834
+      },
+      {
+        "n": 8,
+        "title": "Jorge Polaco (2024)",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/13284878453490\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/nh1u7RB0qD5uQSVX1pQVtbtFFol.jpg",
+        "length": 6074
+      }
+    ]
   }
 ]
