@@ -419,5 +419,105 @@
         "length": 6074
       }
     ]
+  },
+  {
+    "desc": "En el año 2000, un grupo de jóvenes ocupa ilegalmente una casa en Buenos Aires, al tiempo que lucha por la supervivencia en una ciudad cada vez más violenta y hostil.",
+    "episodes": [
+      {
+        "n": 1,
+        "season": 1,
+        "title": "Los cinco mandamientos",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530211936906\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2409
+      },
+      {
+        "n": 2,
+        "season": 1,
+        "title": "Bienvenidos al tren",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272623242\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2467
+      },
+      {
+        "n": 3,
+        "season": 1,
+        "title": "El ojo blindado",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272426634\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2290
+      },
+      {
+        "n": 4,
+        "season": 1,
+        "title": "El beso de Judas",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272492170\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2542
+      },
+      {
+        "n": 5,
+        "season": 1,
+        "title": "El mascapito",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272688778\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 1938
+      },
+      {
+        "n": 6,
+        "season": 1,
+        "title": "Los mantenidos",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530273147530\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2446
+      },
+      {
+        "n": 7,
+        "season": 1,
+        "title": "Paranoia",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272754314\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2469
+      },
+      {
+        "n": 8,
+        "season": 1,
+        "title": "El pollo de Troya",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530273016458\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2348
+      },
+      {
+        "n": 9,
+        "season": 1,
+        "title": "El guardián",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272950922\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2633
+      },
+      {
+        "n": 10,
+        "season": 1,
+        "title": "Miguel",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272557706\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2618
+      },
+      {
+        "n": 11,
+        "season": 1,
+        "title": "Adiós y buena suerte",
+        "embed": "<iframe src=\"https://ok.ru/videoembed/15530272885386\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+        "length": 2692
+      }
+    ],
+    "featured": false,
+    "genre": "Drama",
+    "id": "okupas",
+    "poster": "https://image.tmdb.org/t/p/w500/5uf6L2w2QRomahGMCniHskNOQWf.jpg",
+    "title": "Okupas",
+    "type": "series",
+    "year": 2000
   }
 ]
