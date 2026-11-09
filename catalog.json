@@ -164,6 +164,7 @@
     "poster": "https://image.tmdb.org/t/p/w500/mgUehPbAkMjtd3FyplIRbiYJC0Y.jpg",
     "featured": false,
     "type": "series",
+    "collection": true,
     "desc": "Todas las películas de Jorge Polaco (1946–2014), el director maldito del cine argentino: de Diapasón (1986) a Príncipe azul (2013), más el documental Jorge Polaco (2024) de María Onis. 8 películas.",
     "embed": "<iframe src=\"https://ok.ru/videoembed/8128850103026\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
     "episodes": [
