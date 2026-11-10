@@ -795,7 +795,7 @@ function renderEpList(m){
     if(!isCol && ep.season && ep.season !== lastSeason){ html += '<h4 class="ep-season">Temporada ' + ep.season + '</h4>'; lastSeason = ep.season; }
     html += '<button class="ep-item' + (isCol?" ep-portrait":"") + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
       + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + esc(m.poster||"") + '\';">'
-      + '<span class="ep-t"><strong>' + (isCol ? esc(ep.title) : 'Cap. ' + ep.n + " — " + esc(ep.title)) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
+      + '<span class="ep-t"><strong>' + (isCol ? esc(ep.title) : (ep.title === "Capítulo " + ep.n ? 'Cap. ' + ep.n : 'Cap. ' + ep.n + " — " + esc(ep.title))) + '</strong><span>' + fmtMin(ep.length) + '</span></span>'
       + '</button>';
   });
   box.innerHTML = html;
@@ -808,7 +808,7 @@ function playEpisode(m, idx){
   var ep = m.episodes[idx];
   var src = extractEmbedSrc(ep.embed);
   var isCol = !!m.collection;
-  var epLabel = isCol ? ep.title : ((ep.season ? "T" + ep.season + " · Cap. " + ep.n : "Cap. " + ep.n) + ": " + ep.title);
+  var epLabel = isCol ? ep.title : ((ep.season ? "T" + ep.season + " · Cap. " + ep.n : "Cap. " + ep.n) + (ep.title === "Capítulo " + ep.n ? "" : ": " + ep.title));
   $("playerWrap").innerHTML = src
     ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+' — '+esc(epLabel)+'"></iframe>'
     : '<div class="player-empty"><strong>' + (isCol ? 'Esta película todavía no tiene reproductor' : 'Este capítulo todavía no tiene reproductor') + '</strong></div>';
