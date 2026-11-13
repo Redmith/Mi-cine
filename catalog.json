@@ -547,7 +547,7 @@
     "genre": "Terror",
     "poster": "https://upload.wikimedia.org/wikipedia/en/2/26/Blair_Witch_Project.jpg",
     "desc": "Tres estudiantes de cine se internan en el bosque de Black Hills, en Maryland, para filmar un documental sobre la leyenda de la bruja de Blair. Desaparecen, y un año después aparece el material que grabaron.",
-    "embed": "<iframe src=\"https://bysesayeveum.com/e/mqvxvcmx8va7?c1_file=https%3A%2F%2Fredmith.github.io%2FMi-cine%2Fsubs%2Fblair-witch-es.vtt&c1_label=Espa%C3%B1ol\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/mqvxvcmx8va7\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
     "featured": false
   },
   {
@@ -583,11 +583,11 @@
   {
     "id": "ej-20",
     "title": "Shake Hands with Danger",
-    "year": 1975,
+    "year": 1980,
     "genre": "Documental",
-    "poster": "https://upload.wikimedia.org/wikipedia/commons/1/1a/ShakeHandsWithDanger.png",
-    "desc": "Corto de seguridad industrial encargado por Caterpillar Tractor Co. y producido por Centron Productions. Con accidentes simulados y una canción inolvidable, recuerda a los operadores de maquinaria pesada que sigan los procedimientos y se mantengan alerta: un descuido de un momento puede costar una vida.",
-    "embed": "<iframe src=\"https://bysesayeveum.com/e/qyg9b5htat64?c1_file=https%3A%2F%2Fredmith.github.io%2FMi-cine%2Fsubs%2Fshake-hands-es.vtt&c1_label=Espa%C3%B1ol\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+    "poster": "https://image.tmdb.org/t/p/w500/ggzEblPSYqODQvapAsDSBeVETJG.jpg",
+    "desc": "Cortometraje de formación que advierte sobre los peligros de operar maquinaria pesada de movimiento de tierras, mostrando numerosos accidentes simulados en obras de construcción.",
+    "embed": "<iframe src=\"https://bysesayeveum.com/e/qyg9b5htat64\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
     "featured": false
   }
 ]
