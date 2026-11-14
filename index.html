@@ -1322,7 +1322,7 @@ function tvMove(dir){
     if(dir==="left"){ if(dx>=-4) return; primary = -dx; secondary = Math.abs(dy); }
     if(dir==="down"){ if(dy<=4) return; primary = dy; secondary = Math.abs(dx); }
     if(dir==="up"){ if(dy>=-4) return; primary = -dy; secondary = Math.abs(dx); }
-    var score = primary + secondary*3.5;
+    var score = primary + secondary*6;
     if(score < bestScore){ bestScore = score; best = el; }
   });
   if(best) best.focus();
