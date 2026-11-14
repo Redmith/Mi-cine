@@ -253,6 +253,8 @@
       <div class="continue-card" id="continueCard"></div>
     </section>
 
+    <div class="chips" id="typeChips" role="group" aria-label="Filtrar por tipo"></div>
+
     <div class="chips" id="genreChips" role="group" aria-label="Filtrar por género"></div>
 
     <div class="toolbar">
@@ -271,8 +273,8 @@
       <div class="section-head"><h2>Catálogo</h2><p id="catalogSource"></p></div>
       <div class="grid" id="movieGrid"></div>
       <div class="empty hidden" id="emptyState">
-        <strong>No se encontró ninguna película</strong>
-        Probá con otra búsqueda o cambiá el filtro de género. También podés agregar películas desde <b>Administrar</b>.
+        <strong>No se encontró ningún título</strong>
+        Probá con otra búsqueda o cambiá los filtros. También podés agregar películas desde <b>Administrar</b>.
       </div>
     </section>
   </div>
@@ -531,6 +533,7 @@ var catalog = [];
 var favorites = {};       // id -> true
 var lastPlayedId = null;  // Continuar viendo
 var activeGenre = "Todas";
+var activeType = "all";
 var onlyFavs = false;
 var editingId = null;
 var pendingDeleteId = null;
@@ -590,7 +593,7 @@ function loadCatalog(){
     afterCatalogChange();
   });
 }
-function afterCatalogChange(){ renderHero(); renderChips(); renderGrid(); renderContinue(); }
+function afterCatalogChange(){ renderHero(); renderTypeChips(); renderChips(); renderGrid(); renderContinue(); }
 
 /* ================= Render ================= */
 /* ================= Destacadas: carrusel automático =================
@@ -707,6 +710,21 @@ function genresList(){
   catalog.forEach(function(m){ if(!seen[m.genre]){ seen[m.genre]=1; out.push(m.genre); } });
   return out.sort();
 }
+function renderTypeChips(){
+  var types = [["all","Todo"],["movie","Películas"],["series","Series"]];
+  var html = "";
+  types.forEach(function(t){
+    html += '<button class="chip'+(activeType===t[0]?" active":"")+'" data-type="'+t[0]+'" type="button">'+t[1]+'</button>';
+  });
+  $("typeChips").innerHTML = html;
+  var chips = $("typeChips").querySelectorAll(".chip");
+  for(var i=0;i<chips.length;i++){
+    chips[i].addEventListener("click", function(){
+      activeType = this.getAttribute("data-type");
+      renderTypeChips(); renderGrid();
+    });
+  }
+}
 function renderChips(){
   var html = '<button class="chip'+(activeGenre==="Todas"?" active":"")+'" data-genre="Todas" type="button">Todas</button>';
   genresList().forEach(function(g){
@@ -726,6 +744,8 @@ function renderChips(){
 function filteredMovies(){
   var q = $("searchInput").value.trim().toLowerCase();
   var list = catalog.filter(function(m){
+    if(activeType==="movie" && m.type==="series") return false;
+    if(activeType==="series" && m.type!=="series") return false;
     if(activeGenre!=="Todas" && activeGenre!=="Favoritos" && m.genre!==activeGenre) return false;
     if(onlyFavs && !favorites[m.id]) return false;
     if(q && (m.title+" "+m.year+" "+m.genre).toLowerCase().indexOf(q)===-1) return false;
@@ -750,7 +770,8 @@ function renderGrid(){
   });
   $("movieGrid").innerHTML = html;
   $("emptyState").classList.toggle("hidden", list.length>0);
-  $("countLabel").textContent = list.length + (list.length===1 ? " película" : " películas");
+  var noun = activeType==="series" ? (list.length===1 ? " serie" : " series") : activeType==="movie" ? (list.length===1 ? " película" : " películas") : (list.length===1 ? " título" : " títulos");
+  $("countLabel").textContent = list.length + noun;
   var cards = $("movieGrid").querySelectorAll("[data-open]");
   for(var i=0;i<cards.length;i++){
     cards[i].addEventListener("click", function(e){
