@@ -249,6 +249,7 @@
   body.tv-mode .icon-btn{ width:52px; height:52px; font-size:24px; }
   body.tv-mode :focus{ outline:4px solid #fff; outline-offset:3px; }
   body.tv-mode .card:focus .poster{ border-color:#fff; }
+  body.tv-mode #modalEdit{ display:none; }
 </style>
 </head>
 <body>
@@ -1267,8 +1268,52 @@ function isTvParam(){ try{ return new URLSearchParams(location.search).get("tv")
 function setTvMode(on){
   document.body.classList.toggle("tv-mode", !!on);
   try{ localStorage.setItem("miCineTv", on ? "1" : "0"); }catch(e){}
+  try{
+    var u = new URL(location.href);
+    if(on) u.searchParams.set("tv","1"); else u.searchParams.delete("tv");
+    history.replaceState(null, "", u.pathname + u.search + u.hash);
+  }catch(e){}
   var b = $("navTv"); if(b) b.textContent = on ? "Salir de Modo TV" : "Modo TV";
   if(on) showView("catalogo");
+}
+/* Navegación con flechas en Modo TV: mueve el foco entre botones y tarjetas
+   sin depender de la navegación espacial del navegador de la tele. */
+function tvFocusable(){
+  var scope = $("playerModal").classList.contains("open") ? $("playerModal") : $("viewCatalogo");
+  var els = scope.querySelectorAll("button, input, select, [tabindex]");
+  var out = [];
+  for(var i=0;i<els.length;i++){
+    var el = els[i];
+    if(el.disabled) continue;
+    if(el.closest(".hidden")) continue;
+    var r = el.getBoundingClientRect();
+    if(r.width===0 && r.height===0) continue;
+    out.push(el);
+  }
+  return out;
+}
+function tvMove(dir){
+  var els = tvFocusable();
+  if(!els.length) return;
+  var cur = document.activeElement;
+  if(!cur || cur===document.body || els.indexOf(cur)===-1){ els[0].focus(); return; }
+  var cr = cur.getBoundingClientRect();
+  var cx = cr.left + cr.width/2, cy = cr.top + cr.height/2;
+  var best = null, bestScore = Infinity;
+  els.forEach(function(el){
+    if(el===cur) return;
+    var r = el.getBoundingClientRect();
+    var ex = r.left + r.width/2, ey = r.top + r.height/2;
+    var dx = ex - cx, dy = ey - cy;
+    var primary = 0, secondary = 0;
+    if(dir==="right"){ if(dx<=4) return; primary = dx; secondary = Math.abs(dy); }
+    if(dir==="left"){ if(dx>=-4) return; primary = -dx; secondary = Math.abs(dy); }
+    if(dir==="down"){ if(dy<=4) return; primary = dy; secondary = Math.abs(dx); }
+    if(dir==="up"){ if(dy>=-4) return; primary = -dy; secondary = Math.abs(dx); }
+    var score = primary + secondary*2.2;
+    if(score < bestScore){ bestScore = score; best = el; }
+  });
+  if(best) best.focus();
 }
 function showView(which){
   var isAdmin = which==="admin";
@@ -1340,6 +1385,14 @@ document.addEventListener("DOMContentLoaded", function(){
   $("closePlayer").addEventListener("click", closePlayer);
   $("playerModal").addEventListener("click", function(e){ if(e.target===this) closePlayer(); });
   document.addEventListener("keydown", function(e){ if(e.key==="Escape") closePlayer(); });
+  document.addEventListener("keydown", function(e){
+    if(!document.body.classList.contains("tv-mode")) return;
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if(tag==="INPUT" || tag==="TEXTAREA" || tag==="SELECT") return;
+    var map = {ArrowRight:"right", ArrowLeft:"left", ArrowDown:"down", ArrowUp:"up"};
+    var dir = map[e.key];
+    if(dir){ e.preventDefault(); tvMove(dir); }
+  });
   $("modalFav").addEventListener("click", function(){ if(currentModalId) toggleFav(currentModalId); });
 
   $("fEmbed").addEventListener("input", updateEmbedPreview);
