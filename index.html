@@ -214,6 +214,41 @@
     .grid{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
     .card:focus-visible{ outline-width:5px; }
   }
+  /* ---------- Modo TV (control remoto, 10 pies) ---------- */
+  body.tv-mode{ font-size:19px; }
+  body.tv-mode main{ max-width:1560px; }
+  body.tv-mode .topbar-in{ max-width:1560px; padding:16px 28px; }
+  body.tv-mode .brand{ font-size:26px; }
+  body.tv-mode .nav button{ font-size:19px; padding:10px 14px; }
+  body.tv-mode .searchbox input{ font-size:18px; padding:12px 14px 12px 40px; }
+  body.tv-mode #heroSection, body.tv-mode #navMagnet, body.tv-mode #navAdmin{ display:none; }
+  body.tv-mode .chip{ font-size:19px; padding:10px 2px; }
+  body.tv-mode .toolbar label, body.tv-mode .toolbar select{ font-size:18px; }
+  body.tv-mode .toolbar select{ padding:12px 14px; }
+  body.tv-mode .grid{ grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:28px 20px; }
+  body.tv-mode .card-info h3{ font-size:19px; }
+  body.tv-mode .card-info p{ font-size:16px; }
+  body.tv-mode .section-head h2{ font-size:22px; }
+  body.tv-mode .section-head p{ font-size:16px; }
+  body.tv-mode .count-label{ font-size:16px; }
+  body.tv-mode .continue-card h3{ font-size:22px; }
+  body.tv-mode .continue-card p{ font-size:17px; }
+  body.tv-mode .modal{ max-width:1400px; }
+  body.tv-mode .modal-body{ padding:28px 32px 32px; }
+  body.tv-mode .modal-body h2{ font-size:36px; }
+  body.tv-mode .modal-meta{ font-size:18px; }
+  body.tv-mode .modal-desc{ font-size:19px; }
+  body.tv-mode .ep-list h3{ font-size:24px; }
+  body.tv-mode .ep-list h4.ep-season{ font-size:20px; }
+  body.tv-mode .ep-item{ padding:14px 16px; }
+  body.tv-mode .ep-item .ep-t strong{ font-size:19px; }
+  body.tv-mode .ep-item .ep-t span{ font-size:16px; }
+  body.tv-mode .ep-item img{ width:144px; height:81px; }
+  body.tv-mode .ep-item.ep-portrait img{ width:72px; height:108px; }
+  body.tv-mode .btn{ font-size:18px; padding:13px 20px; }
+  body.tv-mode .icon-btn{ width:52px; height:52px; font-size:24px; }
+  body.tv-mode :focus{ outline:4px solid #fff; outline-offset:3px; }
+  body.tv-mode .card:focus .poster{ border-color:#fff; }
 </style>
 </head>
 <body>
@@ -225,6 +260,7 @@
       <button id="navCatalogo" class="active" type="button">Catálogo</button>
       <button id="navMagnet" type="button">Magnet</button>
       <button id="navAdmin" type="button">Administrar</button>
+      <button id="navTv" type="button">Modo TV</button>
     </nav>
     <div class="searchbox">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -773,6 +809,10 @@ function renderGrid(){
   $("emptyState").classList.toggle("hidden", list.length>0);
   var noun = activeType==="series" ? (list.length===1 ? " serie" : " series") : activeType==="movie" ? (list.length===1 ? " película" : " películas") : (list.length===1 ? " título" : " títulos");
   $("countLabel").textContent = list.length + noun;
+  if(document.body.classList.contains("tv-mode") && !$("playerModal").classList.contains("open") && document.activeElement === document.body){
+    var first = $("movieGrid").querySelector("[data-open]");
+    if(first) first.focus();
+  }
   var cards = $("movieGrid").querySelectorAll("[data-open]");
   for(var i=0;i<cards.length;i++){
     cards[i].addEventListener("click", function(e){
@@ -1222,6 +1262,14 @@ function playMagnetSource(source){
 }
 
 /* ================= Vistas y eventos ================= */
+/* ---------- Modo TV ---------- */
+function isTvParam(){ try{ return new URLSearchParams(location.search).get("tv")==="1"; }catch(e){ return false; } }
+function setTvMode(on){
+  document.body.classList.toggle("tv-mode", !!on);
+  try{ localStorage.setItem("miCineTv", on ? "1" : "0"); }catch(e){}
+  var b = $("navTv"); if(b) b.textContent = on ? "Salir de Modo TV" : "Modo TV";
+  if(on) showView("catalogo");
+}
 function showView(which){
   var isAdmin = which==="admin";
   var isMagnet = which==="magnet";
@@ -1234,6 +1282,10 @@ function showView(which){
   window.scrollTo({top:0, behavior:"smooth"});
 }
 document.addEventListener("DOMContentLoaded", function(){
+  var tvOn = isTvParam();
+  try{ if(!tvOn && localStorage.getItem("miCineTv")==="1") tvOn = true; }catch(e){}
+  setTvMode(tvOn);
+  $("navTv").addEventListener("click", function(){ setTvMode(!document.body.classList.contains("tv-mode")); });
   loadCatalog();
 
   $("heroPrev").addEventListener("click", function(){ goToHero(heroIndex - 1, -1); restartHeroTimer(); });
