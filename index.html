@@ -225,7 +225,9 @@
   body.tv-mode .chip{ font-size:19px; padding:10px 2px; }
   body.tv-mode .toolbar label, body.tv-mode .toolbar select{ font-size:18px; }
   body.tv-mode .toolbar select{ padding:12px 14px; }
-  body.tv-mode .grid{ grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:28px 20px; }
+  body.tv-mode .grid{ grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:28px 20px; }
+  body.tv-mode .card{ transition:transform .15s ease; }
+  body.tv-mode .card:focus{ transform:scale(1.06); position:relative; z-index:2; }
   body.tv-mode .card-info h3{ font-size:19px; }
   body.tv-mode .card-info p{ font-size:16px; }
   body.tv-mode .section-head h2{ font-size:22px; }
@@ -250,6 +252,13 @@
   body.tv-mode :focus{ outline:4px solid #fff; outline-offset:3px; }
   body.tv-mode .card:focus .poster{ border-color:#fff; }
   body.tv-mode #modalEdit{ display:none; }
+  body:not(.tv-mode) #tvKeyboard{ display:none !important; }
+  .tv-keyboard{ margin:18px 0 6px; padding:18px; border:1px solid var(--line); border-radius:6px; background:var(--surface); }
+  .tv-keyboard .tv-krow{ display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .tv-keyboard .tv-krow:last-child{ margin-bottom:0; }
+  .tv-key{ min-width:64px; height:64px; font-size:26px; font-weight:600; background:var(--bg2); border:1px solid var(--line); color:#fff; border-radius:6px; }
+  .tv-key.wide{ min-width:150px; font-size:20px; }
+  .tv-key.action{ color:#fff; border-color:#55555a; }
 </style>
 </head>
 <body>
@@ -305,6 +314,8 @@
       <button class="chip" id="favFilter" type="button">★ Solo favoritos</button>
       <span class="count-label" id="countLabel"></span>
     </div>
+
+    <div id="tvKeyboard" class="tv-keyboard hidden" role="group" aria-label="Teclado en pantalla"></div>
 
     <section aria-label="Catálogo de películas">
       <div class="section-head"><h2>Catálogo</h2><p id="catalogSource"></p></div>
@@ -1279,7 +1290,7 @@ function setTvMode(on){
 /* Navegación con flechas en Modo TV: mueve el foco entre botones y tarjetas
    sin depender de la navegación espacial del navegador de la tele. */
 function tvFocusable(){
-  var scope = $("playerModal").classList.contains("open") ? $("playerModal") : $("viewCatalogo");
+  var scope = $("playerModal").classList.contains("open") ? $("playerModal") : document.body;
   var els = scope.querySelectorAll("button, input, select, [tabindex]");
   var out = [];
   for(var i=0;i<els.length;i++){
@@ -1315,6 +1326,51 @@ function tvMove(dir){
   });
   if(best) best.focus();
 }
+/* ---------- Teclado en pantalla (Modo TV) ---------- */
+function buildTvKeyboard(){
+  var box = $("tvKeyboard"); if(!box || box.children.length) return;
+  var rows = [
+    ["A","B","C","D","E","F","G","H","I","J"],
+    ["K","L","M","N","Ñ","O","P","Q","R","S"],
+    ["T","U","V","W","X","Y","Z","0","1","2"],
+    ["3","4","5","6","7","8","9"]
+  ];
+  rows.forEach(function(row){
+    var div = document.createElement("div");
+    div.className = "tv-krow";
+    row.forEach(function(ch){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "tv-key"; b.textContent = ch; b.setAttribute("data-k", ch);
+      div.appendChild(b);
+    });
+    box.appendChild(div);
+  });
+  var actions = document.createElement("div");
+  actions.className = "tv-krow";
+  [["Espacio","space","wide"],["Borrar","back","wide action"],["Limpiar","clear","wide action"],["Listo","done","wide action"]].forEach(function(a){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "tv-key " + a[2]; b.textContent = a[0]; b.setAttribute("data-k", a[1]);
+    actions.appendChild(b);
+  });
+  box.appendChild(actions);
+  box.addEventListener("click", function(e){
+    var b = e.target.closest("[data-k]"); if(!b) return;
+    var k = b.getAttribute("data-k");
+    var inp = $("searchInput");
+    if(k==="space"){ inp.value += " "; }
+    else if(k==="back"){ inp.value = inp.value.slice(0,-1); }
+    else if(k==="clear"){ inp.value = ""; }
+    else if(k==="done"){ hideTvKeyboard(); var first = $("movieGrid").querySelector("[data-open]"); if(first) first.focus(); return; }
+    else { inp.value += k.toLowerCase(); }
+    renderGrid();
+  });
+}
+function showTvKeyboard(){
+  if(!document.body.classList.contains("tv-mode")) return;
+  buildTvKeyboard();
+  $("tvKeyboard").classList.remove("hidden");
+}
+function hideTvKeyboard(){ var box = $("tvKeyboard"); if(box) box.classList.add("hidden"); }
 function showView(which){
   var isAdmin = which==="admin";
   var isMagnet = which==="magnet";
@@ -1374,6 +1430,7 @@ document.addEventListener("DOMContentLoaded", function(){
     f.text().then(function(t){ applySubtitleText(t, f.name); }).catch(function(){ $("subStatus").textContent="No se pudo leer ese archivo de subtítulos."; });
   });
   $("searchInput").addEventListener("input", function(){ if($("viewCatalogo").classList.contains("hidden")) showView("catalogo"); renderGrid(); });
+  $("searchInput").addEventListener("focus", function(){ showTvKeyboard(); });
   $("sortSelect").addEventListener("change", renderGrid);
   $("favFilter").addEventListener("click", function(){
     onlyFavs = !onlyFavs;
@@ -1384,11 +1441,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
   $("closePlayer").addEventListener("click", closePlayer);
   $("playerModal").addEventListener("click", function(e){ if(e.target===this) closePlayer(); });
-  document.addEventListener("keydown", function(e){ if(e.key==="Escape") closePlayer(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape"){ closePlayer(); hideTvKeyboard(); } });
   document.addEventListener("keydown", function(e){
     if(!document.body.classList.contains("tv-mode")) return;
     var tag = (document.activeElement && document.activeElement.tagName) || "";
-    if(tag==="INPUT" || tag==="TEXTAREA" || tag==="SELECT") return;
+    if(tag==="SELECT") return;
+    if((tag==="INPUT" || tag==="TEXTAREA") && (e.key==="ArrowLeft" || e.key==="ArrowRight")) return;
     var map = {ArrowRight:"right", ArrowLeft:"left", ArrowDown:"down", ArrowUp:"up"};
     var dir = map[e.key];
     if(dir){ e.preventDefault(); tvMove(dir); }
