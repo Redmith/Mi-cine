@@ -1323,6 +1323,7 @@ function tvMove(dir){
     if(dir==="down"){ if(dy<=4) return; primary = dy; secondary = Math.abs(dx); }
     if(dir==="up"){ if(dy>=-4) return; primary = -dy; secondary = Math.abs(dx); }
     var score = primary + secondary*6;
+    if((dir==="left" || dir==="right") && Math.abs(dy) > 40) score += 10000;
     if(score < bestScore){ bestScore = score; best = el; }
   });
   if(best) best.focus();
