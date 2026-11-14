@@ -1296,6 +1296,7 @@ function tvFocusable(){
   for(var i=0;i<els.length;i++){
     var el = els[i];
     if(el.disabled) continue;
+    if(el.classList.contains("fav-btn")) continue;
     if(el.closest(".hidden")) continue;
     var r = el.getBoundingClientRect();
     if(r.width===0 && r.height===0) continue;
@@ -1321,7 +1322,7 @@ function tvMove(dir){
     if(dir==="left"){ if(dx>=-4) return; primary = -dx; secondary = Math.abs(dy); }
     if(dir==="down"){ if(dy<=4) return; primary = dy; secondary = Math.abs(dx); }
     if(dir==="up"){ if(dy>=-4) return; primary = -dy; secondary = Math.abs(dx); }
-    var score = primary + secondary*2.2;
+    var score = primary + secondary*3.5;
     if(score < bestScore){ bestScore = score; best = el; }
   });
   if(best) best.focus();
