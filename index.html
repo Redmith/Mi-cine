@@ -268,6 +268,7 @@
     <div class="brand">MI CINE</div>
     <nav class="nav" aria-label="Secciones">
       <button id="navCatalogo" class="active" type="button">Catálogo</button>
+      <button id="navLatino" type="button">Latino</button><!-- TEMPORAL: pestaña Latino 2026-11-14 -->
       <button id="navMagnet" type="button">Magnet</button>
       <button id="navAdmin" type="button">Administrar</button>
       <button id="navTv" type="button">Modo TV</button>
@@ -578,6 +579,14 @@ var GENRE_COLORS = { "Otro":["#131313","#131313"] };
 
 /* ================= Estado (solo en memoria de esta pestaña) ================= */
 var catalog = [];
+/* TEMPORAL — Pestaña Latino (2026-11-14): catálogo externo nokiLatPlay/data.
+   myCatalog es tu catálogo (catalog.json); latinoCatalog es el listado
+   latino (latino.json). La pestaña solo cambia lo que se muestra:
+   catalog.json no se toca. Para quitar la pestaña, borrar este bloque,
+   el botón #navLatino, showSource/loadLatino y el archivo latino.json. */
+var myCatalog = [];
+var latinoCatalog = [];
+var activeSource = "mine"; // "mine" | "latino"
 var favorites = {};       // id -> true
 var lastPlayedId = null;  // Continuar viendo
 var activeGenre = "Todas";
@@ -633,14 +642,38 @@ function loadCatalog(){
     if(!r.ok) throw new Error("no");
     return r.json();
   }).then(function(data){
-    if(Array.isArray(data) && data.length){ catalog = data; $("catalogSource").textContent = "Cargado desde catalog.json"; }
-    else { catalog = EXAMPLE_CATALOG.slice(); $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar"; }
+    if(Array.isArray(data) && data.length){ myCatalog = data; catalog = myCatalog; $("catalogSource").textContent = "Cargado desde catalog.json"; }
+    else { myCatalog = EXAMPLE_CATALOG.slice(); catalog = myCatalog; $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar"; }
     afterCatalogChange();
   }).catch(function(){
-    catalog = EXAMPLE_CATALOG.slice();
+    myCatalog = EXAMPLE_CATALOG.slice(); catalog = myCatalog;
     $("catalogSource").textContent = "Catálogo de ejemplos — reemplazalos desde Administrar";
     afterCatalogChange();
   });
+}
+/* TEMPORAL — Pestaña Latino: carga el listado externo (latino.json) */
+function loadLatino(){
+  fetch("latino.json",{cache:"no-store"}).then(function(r){
+    if(!r.ok) throw new Error("no");
+    return r.json();
+  }).then(function(data){
+    if(Array.isArray(data)) latinoCatalog = data;
+    if(activeSource==="latino") showSource("latino");
+  }).catch(function(){ latinoCatalog = []; });
+}
+function showSource(src){
+  activeSource = src;
+  catalog = (src==="latino") ? latinoCatalog : myCatalog;
+  activeGenre = "Todas"; activeType = "all"; onlyFavs = false; activeSeason = null;
+  if(src==="latino"){
+    $("catalogSource").textContent = latinoCatalog.length
+      ? "Catálogo Latino temporal — "+latinoCatalog.length+" películas desde nokiLatPlay/data (no es tu catálogo)"
+      : "Cargando catálogo Latino…";
+  } else {
+    $("catalogSource").textContent = "Cargado desde catalog.json";
+  }
+  showView("catalogo");
+  afterCatalogChange();
 }
 function afterCatalogChange(){ renderHero(); renderTypeChips(); renderChips(); renderGrid(); renderContinue(); }
 
@@ -930,6 +963,7 @@ function openPlayer(id){
   currentModalId = id;
   currentEpisode = 0;
   activeSeason = null;
+  $("modalEdit").style.display = (activeSource==="latino") ? "none" : ""; // TEMPORAL: lo latino no se edita
   var epBox = $("epList"); if(epBox) epBox.innerHTML = "";
   lastPlayedId = id; renderContinue();
   if(m.episodes && m.episodes.length){
@@ -1016,6 +1050,7 @@ function ghHeaders(token){
 function saveToGithub(){
   var cfg = ghConfig();
   var st = $("ghStatus");
+  if(activeSource==="latino"){ setStatus(st,"err","Estás en la pestaña Latino (temporal, externa). Volvé a «Catálogo» para guardar tu catálogo, así no se pisa catalog.json con el listado latino."); return; } // TEMPORAL
   if(!cfg.token){ setStatus(st,"err","Primero pegá tu token de GitHub en el campo de arriba. Sin token, GitHub no permite guardar. El token queda solo en la memoria de esta pestaña."); return; }
   setStatus(st,"info","Conectando con GitHub…");
   var url = "https://api.github.com/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo)+"/contents/"+encodeURIComponent(cfg.file);
@@ -1381,7 +1416,8 @@ function showView(which){
   $("viewCatalogo").classList.toggle("hidden", isAdmin||isMagnet);
   $("navAdmin").classList.toggle("active", isAdmin);
   $("navMagnet").classList.toggle("active", isMagnet);
-  $("navCatalogo").classList.toggle("active", !isAdmin && !isMagnet);
+  $("navCatalogo").classList.toggle("active", !isAdmin && !isMagnet && activeSource==="mine");
+  $("navLatino").classList.toggle("active", !isAdmin && !isMagnet && activeSource==="latino"); // TEMPORAL
   window.scrollTo({top:0, behavior:"smooth"});
 }
 document.addEventListener("DOMContentLoaded", function(){
@@ -1390,6 +1426,7 @@ document.addEventListener("DOMContentLoaded", function(){
   setTvMode(tvOn);
   $("navTv").addEventListener("click", function(){ setTvMode(!document.body.classList.contains("tv-mode")); });
   loadCatalog();
+  loadLatino(); // TEMPORAL
 
   $("heroPrev").addEventListener("click", function(){ goToHero(heroIndex - 1, -1); restartHeroTimer(); });
   $("heroNext").addEventListener("click", function(){ goToHero(heroIndex + 1, 1); restartHeroTimer(); });
@@ -1399,7 +1436,8 @@ document.addEventListener("DOMContentLoaded", function(){
   $("heroSection").addEventListener("focusout", function(){ heroHoverPause = false; });
   document.addEventListener("visibilitychange", function(){ if(!document.hidden) restartHeroTimer(); });
 
-  $("navCatalogo").addEventListener("click", function(){ showView("catalogo"); });
+  $("navCatalogo").addEventListener("click", function(){ showSource("mine"); });
+  $("navLatino").addEventListener("click", function(){ showSource("latino"); }); // TEMPORAL
   $("navMagnet").addEventListener("click", function(){ showView("magnet"); });
   $("navAdmin").addEventListener("click", function(){ showView("admin"); });
 
