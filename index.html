@@ -534,6 +534,7 @@ var favorites = {};       // id -> true
 var lastPlayedId = null;  // Continuar viendo
 var activeGenre = "Todas";
 var activeType = "all";
+var activeSeason = null;
 var onlyFavs = false;
 var editingId = null;
 var pendingDeleteId = null;
@@ -811,8 +812,24 @@ function renderEpList(m){
   if(!m.episodes || !m.episodes.length){ box.innerHTML = ""; return; }
   var isCol = !!m.collection;
   var html = isCol ? "<h3>Películas (" + m.episodes.length + ")</h3>" : "<h3>Capítulos (" + m.episodes.length + ")</h3>";
+  var seasons = [];
+  if(!isCol){
+    var seenS = {};
+    m.episodes.forEach(function(ep){ if(ep.season && !seenS[ep.season]){ seenS[ep.season]=1; seasons.push(ep.season); } });
+    seasons.sort(function(a,b){ return a-b; });
+  }
+  if(seasons.length > 1){
+    if(activeSeason === null || activeSeason === undefined) activeSeason = seasons[0];
+    html += '<div class="chips ep-seasons" role="group" aria-label="Elegir temporada">';
+    html += '<button class="chip'+(activeSeason==="all"?" active":"")+'" data-season="all" type="button">Todas</button>';
+    seasons.forEach(function(s){
+      html += '<button class="chip'+(activeSeason===s?" active":"")+'" data-season="'+s+'" type="button">Temporada '+s+'</button>';
+    });
+    html += '</div>';
+  }
   var lastSeason = 0;
   m.episodes.forEach(function(ep, i){
+    if(!isCol && seasons.length > 1 && activeSeason !== "all" && ep.season !== activeSeason) return;
     if(!isCol && ep.season && ep.season !== lastSeason){ html += '<h4 class="ep-season">Temporada ' + ep.season + '</h4>'; lastSeason = ep.season; }
     html += '<button class="ep-item' + (isCol?" ep-portrait":"") + (i===currentEpisode?" active":"") + '" data-ep="' + i + '" type="button">'
       + '<img src="' + esc(ep.poster||"") + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + esc(m.poster||"") + '\';">'
@@ -820,6 +837,14 @@ function renderEpList(m){
       + '</button>';
   });
   box.innerHTML = html;
+  var sChips = box.querySelectorAll("[data-season]");
+  for(var k=0;k<sChips.length;k++){
+    sChips[k].addEventListener("click", function(){
+      var v = this.getAttribute("data-season");
+      activeSeason = (v==="all") ? "all" : parseInt(v,10);
+      renderEpList(m);
+    });
+  }
   var items = box.querySelectorAll("[data-ep]");
   for(var i=0;i<items.length;i++) items[i].addEventListener("click", function(){ playEpisode(m, parseInt(this.getAttribute("data-ep"),10)); });
 }
@@ -852,6 +877,7 @@ function openPlayer(id){
   var m = findMovie(id); if(!m) return;
   currentModalId = id;
   currentEpisode = 0;
+  activeSeason = null;
   var epBox = $("epList"); if(epBox) epBox.innerHTML = "";
   lastPlayedId = id; renderContinue();
   if(m.episodes && m.episodes.length){
