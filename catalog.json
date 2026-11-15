@@ -548,7 +548,8 @@
     "poster": "https://upload.wikimedia.org/wikipedia/en/2/26/Blair_Witch_Project.jpg",
     "desc": "Tres estudiantes de cine se internan en el bosque de Black Hills, en Maryland, para filmar un documental sobre la leyenda de la bruja de Blair. Desaparecen, y un año después aparece el material que grabaron.",
     "embed": "<iframe src=\"https://bysesayeveum.com/e/mqvxvcmx8va7?c1_file=https%3A%2F%2Fredmith.github.io%2FMi-cine%2Fsubs%2Fblair-witch-es.vtt&c1_label=Espa%C3%B1ol\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
-    "featured": false
+    "featured": false,
+    "embed_latino": "<iframe src=\"https://bysesayeveum.com/e/edkk424lbf9v\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>"
   },
   {
     "id": "ej-17",
@@ -688,7 +689,8 @@
     "poster": "https://image.tmdb.org/t/p/w500/nzlv62aC0octS5AklAiWpXLX9Z0.jpg",
     "desc": "Leonard Shelby sigue la pista del hombre que violó y asesinó a su mujer. Sin embargo, la dificultad de localizar al asesino de su esposa se ve agravada por el hecho de que padece una forma rara e intratable de pérdida de memoria a corto plazo.",
     "embed": "https://bysesayeveum.com/e/gfkr2tgvncnd?c1_file=https%3A%2F%2Fredmith.github.io%2FMi-cine%2Fsubs%2Fmemento-es.vtt&c1_label=Espa%C3%B1ol",
-    "featured": false
+    "featured": false,
+    "embed_latino": "<iframe src=\"https://bysesayeveum.com/e/kd8l63s93v54\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>"
   },
   {
     "id": "ej-31",
@@ -7351,7 +7353,8 @@
     "poster": "https://image.tmdb.org/t/p/w500/tzGY49kseSE9QAKk47uuDGwnSCu.jpg",
     "desc": "En una estación experimental de la Antártida, un equipo de investigadores descubre a un ente extraño venido del espacio, que según todos los indicios ha permanecido enterrado en la nieve durante más de 100.000 años. Al descongelarse, experimenta una metamorfosis sorprendente.",
     "embed": "https://bysesayeveum.com/e/ofobx084s4yh?c1_file=https%3A%2F%2Fredmith.github.io%2FMi-cine%2Fsubs%2Fthe-thing-es.vtt&c1_label=Espa%C3%B1ol",
-    "featured": false
+    "featured": false,
+    "embed_latino": "<iframe src=\"https://bysesayeveum.com/e/b88hm6744z52\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>"
   },
   {
     "id": "kenan-y-kel",
