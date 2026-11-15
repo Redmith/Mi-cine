@@ -485,6 +485,7 @@
   <div class="modal">
     <div class="modal-close-row"><button class="icon-btn" id="closePlayer" type="button" aria-label="Cerrar reproductor">✕</button></div>
     <div class="player-wrap" id="playerWrap"></div>
+    <div class="chips version-chips" id="versionChips" role="group" aria-label="Elegir versión" style="display:none"></div>
     <div class="modal-body">
       <h2 id="modalTitle">—</h2>
       <div class="modal-meta" id="modalMeta"></div>
@@ -597,6 +598,7 @@ var editingId = null;
 var pendingDeleteId = null;
 var currentModalId = null;
 var currentEpisode = 0;
+var activeVersion = "sub"; // "sub" | "latino": versión del reproductor para películas con embed_latino
 var githubToken = "";     // NUNCA se guarda fuera de esta variable
 
 function $(id){ return document.getElementById(id); }
@@ -933,9 +935,30 @@ function renderEpList(m){
   var items = box.querySelectorAll("[data-ep]");
   for(var i=0;i<items.length;i++) items[i].addEventListener("click", function(){ playEpisode(m, parseInt(this.getAttribute("data-ep"),10)); });
 }
+function setMoviePlayer(m, version){
+  var raw = version === "latino" ? m.embed_latino : m.embed;
+  var src = extractEmbedSrc(raw);
+  $("playerWrap").innerHTML = src
+    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+'"></iframe>'
+    : '<div class="player-empty"><strong>Esta película todavía no tiene reproductor</strong><span>Es una película de ejemplo. Para verla, pegá su código de Byse desde <b>Administrar → Editar</b>.<br>Ejemplo de formato: <code>&lt;iframe src="https://bysetayico.com/e/…\"&gt;</code></span></div>';
+}
+function renderVersionChips(m){
+  var box = $("versionChips"); if(!box) return;
+  if(!m.embed_latino){ box.innerHTML = ""; box.style.display = "none"; return; }
+  box.innerHTML = '<button class="chip'+(activeVersion==="sub"?" active":"")+'" data-version="sub" type="button">Subtitulada</button>'
+    + '<button class="chip'+(activeVersion==="latino"?" active":"")+'" data-version="latino" type="button">Latino</button>';
+  box.style.display = "";
+  var chips = box.querySelectorAll("[data-version]");
+  for(var i=0;i<chips.length;i++) chips[i].addEventListener("click", function(){
+    activeVersion = this.getAttribute("data-version");
+    renderVersionChips(m);
+    setMoviePlayer(m, activeVersion);
+  });
+}
 function playEpisode(m, idx){
   if(!m.episodes || !m.episodes[idx]) return;
   currentEpisode = idx;
+  var vc = $("versionChips"); if(vc){ vc.innerHTML = ""; vc.style.display = "none"; }
   var ep = m.episodes[idx];
   var src = extractEmbedSrc(ep.embed);
   var isCol = !!m.collection;
@@ -980,10 +1003,9 @@ function openPlayer(id){
     playEpisode(m, 0);
     return;
   }
-  var src = extractEmbedSrc(m.embed);
-  $("playerWrap").innerHTML = src
-    ? '<iframe src="'+esc(src)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" title="Reproductor de '+esc(m.title)+'"></iframe>'
-    : '<div class="player-empty"><strong>Esta película todavía no tiene reproductor</strong><span>Es una película de ejemplo. Para verla, pegá su código de Byse desde <b>Administrar → Editar</b>.<br>Ejemplo de formato: <code>&lt;iframe src="https://bysetayico.com/e/…"&gt;</code></span></div>';
+  activeVersion = "sub";
+  renderVersionChips(m);
+  setMoviePlayer(m, "sub");
   $("modalTitle").textContent = m.title;
   $("modalMeta").innerHTML = '<span>'+esc(m.year)+'</span><span>'+esc(m.genre)+'</span>';
   $("modalDesc").textContent = m.desc || "Sin descripción.";
@@ -999,6 +1021,8 @@ function syncModalFav(){
 function closePlayer(){
   $("playerModal").classList.remove("open");
   $("playerWrap").innerHTML = ""; // corta la reproducción al cerrar
+  var vc2 = $("versionChips"); if(vc2){ vc2.innerHTML = ""; vc2.style.display = "none"; }
+  activeVersion = "sub";
   var box = $("epList"); if(box) box.innerHTML = "";
   document.body.style.overflow = "";
   currentModalId = null;
