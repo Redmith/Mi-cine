@@ -7989,5 +7989,41 @@
         "length": 1378
       }
     ]
+  },
+  {
+    "id": "bananas-en-pijamas-2011",
+    "title": "Bananas en pijamas (2011)",
+    "year": 2011,
+    "genre": "Infantil",
+    "poster": "https://artworks.thetvdb.com/banners/posters/250082-1.jpg",
+    "desc": "La versión animada en CGI de B1 y B2, con sus amigos los osos Amy, Lulu y Morgan y el travieso Don Rata, en la Avenida de los Abrazos. Doblada al español latino.",
+    "type": "series",
+    "featured": false,
+    "episodes": [
+      {
+        "n": 31,
+        "season": 1,
+        "title": "Quién se comió mi avena",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/yp3sp8zjkt1g\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://artworks.thetvdb.com/banners/posters/250082-1.jpg",
+        "length": 645
+      },
+      {
+        "n": 17,
+        "season": 3,
+        "title": "El Hipo de las bananas (parte 1)",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/w4l92dutedo9\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://artworks.thetvdb.com/banners/posters/250082-1.jpg",
+        "length": 526
+      },
+      {
+        "n": 17,
+        "season": 3,
+        "title": "El Hipo de las bananas (parte 2)",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/l2pjkbzg1qlb\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://artworks.thetvdb.com/banners/posters/250082-1.jpg",
+        "length": 105
+      }
+    ]
   }
 ]
