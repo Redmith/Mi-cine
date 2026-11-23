@@ -7969,5 +7969,25 @@
     "desc": "Un experimento para solucionar el calentamiento global acabó con la mayoría de vida existente en el planeta. El último tren llamado Snowpiercer (Rompenieves) se mueve en círculos por el mundo, a través de un desierto de hielo y nieve. Los últimos supervivientes de la Tierra se amontonan en sus vagones. El joven Curtis (Chris Evans) iniciará una revolución desde los vagones de cola.",
     "embed": "https://bysesayeveum.com/e/d718uixmq2j4?c1_file=https%3A%2F%2Fredmith.github.io%2FMi-cine%2Fsubs%2Fsnowpiercer-es.vtt&c1_label=Espa%C3%B1ol",
     "featured": false
+  },
+  {
+    "id": "bananas-en-pijamas",
+    "title": "Bananas en pijamas",
+    "year": 1992,
+    "genre": "Infantil",
+    "poster": "https://artworks.thetvdb.com/banners/posters/72638-3.jpg",
+    "desc": "B1 y B2, dos bananas gemelas, viven en la Avenida de los Abrazos con sus amigos los osos Amy, Lulu y Morgan y el travieso Don Rata. Entre canciones, disfraces y bailes, cada día es una nueva aventura.",
+    "type": "series",
+    "featured": false,
+    "episodes": [
+      {
+        "n": 1,
+        "season": 1,
+        "title": "El Cumpleaños de las Bananas",
+        "embed": "<iframe src=\"https://bysesayeveum.com/e/iuw6n733s477\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" width=\"640\" height=\"360\" allowfullscreen></iframe>",
+        "poster": "https://artworks.thetvdb.com/banners/posters/72638-3.jpg",
+        "length": 1378
+      }
+    ]
   }
 ]
